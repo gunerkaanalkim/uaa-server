@@ -1,0 +1,18 @@
+server:
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/integrator
+    username: ${DATABASE_USERNAME:integrator}
+    password: ${DATABASE_PASSWORD:integrator}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+jwt:
+  secret: <SECRET_SHOULD_BE_CHANGED>
+
+unauthorizedEndpoints: /authenticate/login, /api/seeder, /v2/api-docs, /configuration/ui, /swagger-resources/**, /swagger-ui/**, /configuration/security, /swagger-ui.html, /webjars/**, /webjars/springfox-swagger-ui/**, /index.html, /swagger-ui/index.html

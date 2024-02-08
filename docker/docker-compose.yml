@@ -1,0 +1,20 @@
+version: '3.6'
+services:
+  database:
+    image: mariadb:10.5.8
+    restart: always
+    environment:
+      MYSQL_DATABASE: '${DATABASE_NAME}'
+      MYSQL_USER: '${DATABASE_USERNAME}'
+      MYSQL_PASSWORD: '${DATABASE_PASSWORD}'
+      MYSQL_ROOT_PASSWORD: '${DATABASE_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: '${DATABASE_PASSWORD}'
+      MYSQL_RANDOM_ROOT_PASSWORD: '${DATABASE_PASSWORD}'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - db-volume:/var/lib/mysql
+volumes:
+  db-volume:
