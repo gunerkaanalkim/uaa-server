@@ -10,7 +10,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
+  flyway:
+    enabled: true
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306
+    password: ${DATABASE_USERNAME:integrator}
+    user: ${DATABASE_PASSWORD:integrator}
+    schemas: integrator
+    locations: classpath:database/migration/mysql
 
 jwt:
   secret: <SECRET_SHOULD_BE_CHANGED>

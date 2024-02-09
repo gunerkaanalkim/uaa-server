@@ -21,25 +21,22 @@ public class CORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE, HEAD");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Credentials", "true");
+
         Enumeration<String> headersEnum = ((HttpServletRequest) req).getHeaders("Access-Control-Request-Headers");
         StringBuilder headers = new StringBuilder("Authorization, Content-Type,X-Requested-With,Content-disposition,Accept");
         String delim = ",";
+
         while (headersEnum.hasMoreElements()) {
             headers.append(delim).append(headersEnum.nextElement());
         }
+
         response.setHeader("Access-Control-Allow-Headers", headers.toString());
+
         if ("OPTIONS".equalsIgnoreCase(((HttpServletRequest) req).getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             chain.doFilter(req, res);
         }
-    }
 
-    @Override
-    public void destroy() {
-    }
-
-    @Override
-    public void init(FilterConfig config) throws ServletException {
     }
 }
