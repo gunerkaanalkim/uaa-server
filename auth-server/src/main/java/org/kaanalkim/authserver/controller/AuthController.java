@@ -56,7 +56,7 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(token, userSecret));
     }
 
-    @PostMapping(value = "who-am-i")
+    @GetMapping(value = "who-am-i")
     public ResponseEntity<UserInfo> whoAmI() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         UserInfo userInfo = this.userService.getByUsername(userName);
