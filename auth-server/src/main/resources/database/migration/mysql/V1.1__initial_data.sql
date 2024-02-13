@@ -13,6 +13,6 @@ VALUES ('SYSTEM',
         '2024-02-08 23:35:14.000000',
         'g.kaanalkim@gmail.com',
         'Guner Kaan',
-        '1234',
+        '$2a$10$e1xbOGHMTzbmlOoEMrBKCesTQMAbycYPLGByPzLTd9dlcNf3zQWzK',
         'Alkim',
         'kaanalkim');
