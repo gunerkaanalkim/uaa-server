@@ -1,21 +1,39 @@
 version: '3.6'
 services:
+  auth-server:
+    image: kaanalkim/auth-server
+    restart: no
+    environment:
+      - "PROFILE=${AUTH_SERVER_PROFILE}"
+      - "DB_USERNAME=${APP_DATABASE_USERNAME}"
+      - "DB_PASSWORD=${APP_DATABASE_PASSWORD}"
+      - "DB_HOST=${APP_DATABASE_HOST}"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - app-database
+    links:
+      - app-database
+    networks:
+      - app-network
   app-database:
     image: mariadb:10.5.8
     restart: always
     environment:
-      MYSQL_DATABASE: '${DATABASE_NAME}'
-      MYSQL_USER: '${DATABASE_USERNAME}'
-      MYSQL_PASSWORD: '${DATABASE_PASSWORD}'
-      MYSQL_ROOT_PASSWORD: '${DATABASE_PASSWORD}'
-      MYSQL_ALLOW_EMPTY_PASSWORD: '${DATABASE_PASSWORD}'
-      MYSQL_RANDOM_ROOT_PASSWORD: '${DATABASE_PASSWORD}'
+      MYSQL_DATABASE: '${APP_DATABASE_NAME}'
+      MYSQL_USER: '${APP_DATABASE_USERNAME}'
+      MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
+      MYSQL_ROOT_PASSWORD: '${APP_DATABASE_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: '${APP_DATABASE_PASSWORD}'
+      MYSQL_RANDOM_ROOT_PASSWORD: '${APP_DATABASE_PASSWORD}'
     ports:
       - '3306:3306'
     expose:
       - '3306'
     volumes:
       - app-db-volume:/var/lib/mysql
+    networks:
+      - app-network
   kong-database:
     image: postgres:13
     restart: always
@@ -91,3 +109,4 @@ volumes:
   kong-db-volume:
 networks:
   kong-net:
+  app-network:
