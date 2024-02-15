@@ -1,8 +1,11 @@
 package org.kaanalkim.authserver.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.kaanalkim.authserver.exception.JWTVerificationException;
+import org.kaanalkim.authserver.payload.response.JWTVerificationResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -75,5 +78,19 @@ public class JwtTokenUtil implements Serializable {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public JWTVerificationResponse verifyToken(String token) {
+        JwtParser jwtParser = Jwts.parser().setSigningKey(secret);
+
+        Claims claims;
+
+        try {
+            claims = jwtParser.parseClaimsJws(token).getBody();
+        } catch (Exception e) {
+            throw new JWTVerificationException("JWT verification has been failed.");
+        }
+
+        return JWTVerificationResponse.builder().isValid(true).claims(claims).build();
     }
 }
