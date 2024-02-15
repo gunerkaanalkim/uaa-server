@@ -4,11 +4,9 @@ import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.model.Role;
 import org.kaanalkim.authserver.model.RolePermission;
 import org.kaanalkim.authserver.model.RoleUser;
-import org.kaanalkim.authserver.payload.request.Credential;
-import org.kaanalkim.authserver.payload.request.PermissionToRole;
-import org.kaanalkim.authserver.payload.request.PermissionsToRole;
-import org.kaanalkim.authserver.payload.request.RoleToUser;
+import org.kaanalkim.authserver.payload.request.*;
 import org.kaanalkim.authserver.payload.response.AuthResponse;
+import org.kaanalkim.authserver.payload.response.JWTVerificationResponse;
 import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.security.JwtTokenUtil;
 import org.kaanalkim.authserver.service.AuthenticationService;
@@ -16,6 +14,7 @@ import org.kaanalkim.authserver.service.RolePermissionService;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -63,6 +62,14 @@ public class AuthController {
 
         return ResponseEntity.ok().body(userInfo);
     }
+
+    @GetMapping(value = "verify-token")
+    public ResponseEntity<JWTVerificationResponse> verifyToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String bearerToken) {
+        JWTVerificationResponse jwtVerificationResponse = this.jwtTokenUtil.verifyToken(bearerToken.substring(7));
+
+        return ResponseEntity.ok().body(jwtVerificationResponse);
+    }
+
 
     @PostMapping("assign-role")
     public ResponseEntity<RoleUser> assignRoleToUser(@RequestBody RoleToUser roleToUser) {

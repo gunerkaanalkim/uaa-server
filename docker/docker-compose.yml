@@ -1,21 +1,21 @@
 version: '3.6'
 services:
-  auth-server:
-    image: kaanalkim/auth-server
-    restart: no
-    environment:
-      - "PROFILE=${AUTH_SERVER_PROFILE}"
-      - "DB_USERNAME=${APP_DATABASE_USERNAME}"
-      - "DB_PASSWORD=${APP_DATABASE_PASSWORD}"
-      - "DB_HOST=${APP_DATABASE_HOST}"
-    ports:
-      - "8080:8080"
-    depends_on:
-      - app-database
-    links:
-      - app-database
-    networks:
-      - app-network
+#  auth-server:
+#    image: kaanalkim/auth-server
+#    restart: no
+#    environment:
+#      - "PROFILE=${AUTH_SERVER_PROFILE}"
+#      - "DB_USERNAME=${APP_DATABASE_USERNAME}"
+#      - "DB_PASSWORD=${APP_DATABASE_PASSWORD}"
+#      - "DB_HOST=${APP_DATABASE_HOST}"
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - app-database
+#    links:
+#      - app-database
+#    networks:
+#      - app-network
   app-database:
     image: mariadb:10.5.8
     restart: always
@@ -34,76 +34,76 @@ services:
       - app-db-volume:/var/lib/mysql
     networks:
       - app-network
-  kong-database:
-    image: postgres:13
-    restart: always
-    environment:
-      POSTGRES_DB: '${KONG_DATABASE_NAME}'
-      POSTGRES_USER: '${KONG_DATABASE_USERNAME}'
-      POSTGRES_PASSWORD: '${KONG_DATABASE_PASSWORD}'
-    ports:
-      - '5432:5432'
-    expose:
-      - '5432'
-    volumes:
-      - kong-db-volume:/var/lib/mysql
-    networks:
-      kong-net:
-  kong-migration:
-    image: kong/kong-gateway:3.5.0.3
-    command: "kong migrations bootstrap"
-    restart: on-failure
-    environment:
-      KONG_DATABASE: 'postgres'
-      KONG_PG_HOST: kong-database
-      KONG_PG_PASSWORD: '${KONG_DATABASE_PASSWORD}'
-      KONG_PASSWORD: '${KONG_PASSWORD}'
-    networks:
-      kong-net:
-    depends_on:
-      - kong-database
-    links:
-      - kong-database
-  kong-gateway:
-    image: kong/kong-gateway:3.5.0.3
-    restart: on-failure
-    environment:
-      KONG_DATABASE: 'postgres'
-      KONG_PG_HOST: kong-database
-      KONG_PG_USER: '${KONG_DATABASE_USERNAME}'
-      KONG_PG_PASSWORD: '${KONG_DATABASE_PASSWORD}'
-      KONG_PROXY_ACCESS_LOG: '${KONG_PROXY_ACCESS_LOG}'
-      KONG_ADMIN_ACCESS_LOG: '${KONG_ADMIN_ACCESS_LOG}'
-      KONG_PROXY_ERROR_LOG: '${KONG_PROXY_ERROR_LOG}'
-      KONG_ADMIN_ERROR_LOG: '${KONG_ADMIN_ERROR_LOG}'
-      KONG_ADMIN_LISTEN: '${KONG_ADMIN_LISTEN}'
-      KONG_ADMIN_GUI_URL: '${KONG_ADMIN_GUI_URL}'
-    volumes:
-      - kong-db-volume:/var/lib/mysql
-    ports:
-      - '8000:8000'
-      - '8001:8001'
-      - '8002:8002'
-      - '8003:8003'
-      - '8004:8004'
-      - '8443:8443'
-      - '8444:8444'
-      - '8445:8445'
-    expose:
-      - '8001'
-      - '8002'
-    networks:
-      kong-net:
-    depends_on:
-      - kong-database
-      - kong-migration
-    links:
-      - kong-database
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://kong:8001" ]
-      interval: 5s
-      timeout: 2s
-      retries: 15
+#  kong-database:
+#    image: postgres:13
+#    restart: always
+#    environment:
+#      POSTGRES_DB: '${KONG_DATABASE_NAME}'
+#      POSTGRES_USER: '${KONG_DATABASE_USERNAME}'
+#      POSTGRES_PASSWORD: '${KONG_DATABASE_PASSWORD}'
+#    ports:
+#      - '5432:5432'
+#    expose:
+#      - '5432'
+#    volumes:
+#      - kong-db-volume:/var/lib/mysql
+#    networks:
+#      kong-net:
+#  kong-migration:
+#    image: kong/kong-gateway:3.5.0.3
+#    command: "kong migrations bootstrap"
+#    restart: on-failure
+#    environment:
+#      KONG_DATABASE: 'postgres'
+#      KONG_PG_HOST: kong-database
+#      KONG_PG_PASSWORD: '${KONG_DATABASE_PASSWORD}'
+#      KONG_PASSWORD: '${KONG_PASSWORD}'
+#    networks:
+#      kong-net:
+#    depends_on:
+#      - kong-database
+#    links:
+#      - kong-database
+#  kong-gateway:
+#    image: kong/kong-gateway:3.5.0.3
+#    restart: on-failure
+#    environment:
+#      KONG_DATABASE: 'postgres'
+#      KONG_PG_HOST: kong-database
+#      KONG_PG_USER: '${KONG_DATABASE_USERNAME}'
+#      KONG_PG_PASSWORD: '${KONG_DATABASE_PASSWORD}'
+#      KONG_PROXY_ACCESS_LOG: '${KONG_PROXY_ACCESS_LOG}'
+#      KONG_ADMIN_ACCESS_LOG: '${KONG_ADMIN_ACCESS_LOG}'
+#      KONG_PROXY_ERROR_LOG: '${KONG_PROXY_ERROR_LOG}'
+#      KONG_ADMIN_ERROR_LOG: '${KONG_ADMIN_ERROR_LOG}'
+#      KONG_ADMIN_LISTEN: '${KONG_ADMIN_LISTEN}'
+#      KONG_ADMIN_GUI_URL: '${KONG_ADMIN_GUI_URL}'
+#    volumes:
+#      - kong-db-volume:/var/lib/mysql
+#    ports:
+#      - '8000:8000'
+#      - '8001:8001'
+#      - '8002:8002'
+#      - '8003:8003'
+#      - '8004:8004'
+#      - '8443:8443'
+#      - '8444:8444'
+#      - '8445:8445'
+#    expose:
+#      - '8001'
+#      - '8002'
+#    networks:
+#      kong-net:
+#    depends_on:
+#      - kong-database
+#      - kong-migration
+#    links:
+#      - kong-database
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://kong:8001" ]
+#      interval: 5s
+#      timeout: 2s
+#      retries: 15
 volumes:
   app-db-volume:
   kong-db-volume:

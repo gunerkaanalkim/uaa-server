@@ -45,7 +45,7 @@ public class SwaggerConfiguration {
 
         private ApiInfo apiInfo() {
             return new ApiInfo(
-                    "Integrator REST API",
+                    "Auth Server REST API",
                     "Some custom description of API.",
                     "1.0",
                     "Terms of service",
