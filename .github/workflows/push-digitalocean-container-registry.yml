@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build image
-        run: docker build -t integrations/integrator-server .
+        run: docker build -t integrations/auth-server .
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -26,7 +26,7 @@ jobs:
         run: doctl registry login --expiry-seconds 600
 
       - name: Tag image
-        run: docker tag integrations/integrator-server registry.digitalocean.com/integrator-container-registry/integrator-server:${{github.event.inputs.version }}
+        run: docker tag integrations/auth-server registry.digitalocean.com/integrator-container-registry/auth-server:${{github.event.inputs.version }}
 
       - name: Push image to DO Container Registry
-        run: docker push registry.digitalocean.com/integrator-container-registry/integrator-server:${{ github.event.inputs.version }}
+        run: docker push registry.digitalocean.com/integrator-container-registry/auth-server:${{ github.event.inputs.version }}
