@@ -4,20 +4,13 @@ server:
 
 spring:
   datasource:
-    url: ${DB_HOST:jdbc:mysql://localhost:3306/integrator}
-    username: ${DATABASE_USERNAME:integrator}
-    password: ${DATABASE_PASSWORD:integrator}
+    url: jdbc:mysql://integrator-database-do-user-12394181-0.c.db.ondigitalocean.com:25060/integrator
+    username: doadmin
+    password: AVNS_O5ZBKWlbQSU9AdUm75J
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
-#  flyway:
-#    enabled: false
-#    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306
-#    password: ${DATABASE_USERNAME:integrator}
-#    user: ${DATABASE_PASSWORD:integrator}
-#    schemas: integrator
-#    locations: classpath:database/migration/mysql
 
 jwt:
   secret: <SECRET_SHOULD_BE_CHANGED>

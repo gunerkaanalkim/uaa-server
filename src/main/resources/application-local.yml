@@ -11,13 +11,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-#  flyway:
-#    enabled: false
-#    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306
-#    password: ${DATABASE_USERNAME:integrator}
-#    user: ${DATABASE_PASSWORD:integrator}
-#    schemas: integrator
-#    locations: classpath:database/migration/mysql
 
 jwt:
   secret: <SECRET_SHOULD_BE_CHANGED>
