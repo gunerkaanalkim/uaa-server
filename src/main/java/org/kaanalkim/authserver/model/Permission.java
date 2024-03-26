@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class Permission extends AbstractEntity {
     private String controller;
-    private String controllerAlias;
-    private String permissionName;
+    private String title;
     private String description;
+    private String url;
 }
