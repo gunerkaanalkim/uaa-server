@@ -11,13 +11,13 @@ import java.util.Optional;
 
 @Repository
 public interface PermissionRepository extends BaseRepository<Permission, Long> {
-    Optional<Permission> findByControllerAndPermissionName(String controller, String permissionName);
+    Optional<Permission> findByControllerAndTitle(String controller, String title);
 
     @Query(nativeQuery = true,
             value = "SELECT p.id,\n" +
                     "       p.controller,\n" +
                     "       p.controller_alias              as controllerAlias,\n" +
-                    "       p.permission_name               as permissionName,\n" +
+                    "       p.title               as permissionName,\n" +
                     "       p.description,\n" +
                     "       COALESCE((SELECT rp.id as rolePermissionId\n" +
                     "        FROM role_permission rp\n" +

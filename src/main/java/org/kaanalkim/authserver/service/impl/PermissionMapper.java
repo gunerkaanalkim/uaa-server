@@ -11,9 +11,8 @@ public class PermissionMapper implements BaseMapper<Permission, PermissionDTO> {
     public PermissionDTO toDTO(Permission permission) {
         return PermissionDTO.builder()
                 .id(permission.getId())
-                .permissionName(permission.getPermissionName())
+                .title(permission.getTitle())
                 .controller(permission.getController())
-                .controllerAlias(permission.getControllerAlias())
                 .description(permission.getDescription())
                 .build();
     }
@@ -22,9 +21,8 @@ public class PermissionMapper implements BaseMapper<Permission, PermissionDTO> {
     public Permission toEntity(PermissionDTO permissionDTO) {
         return Permission.builder()
                 .id(permissionDTO.getId())
-                .permissionName(permissionDTO.getPermissionName())
+                .title(permissionDTO.getTitle())
                 .controller(permissionDTO.getController())
-                .controllerAlias(permissionDTO.getControllerAlias())
                 .description(permissionDTO.getDescription())
                 .build();
     }
