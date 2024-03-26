@@ -95,7 +95,13 @@ public abstract class AbstractCrudService<T extends AbstractEntity, D extends Ab
     }
 
     public Pageable getPaging(Integer pageNo, Integer pageSize, String column, String order) {
-        return getPager(pageNo, pageSize, column, order);
+        int calculatedPageNumber = pageNo - 1;
+
+        if (calculatedPageNumber <= 0) {
+            calculatedPageNumber = 0;
+        }
+
+        return getPager(calculatedPageNumber, pageSize, column, order);
     }
 
     private String[] getNullPropertyNames(T t) {
