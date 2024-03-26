@@ -37,7 +37,7 @@ public class PermissionServiceImpl extends AbstractCrudService<Permission, Permi
 
     @Override
     public Optional<Permission> findByControllerAndPermissionName(String controller, String permissionName) {
-        return this.permissionRepository.findByControllerAndPermissionName(controller, permissionName);
+        return this.permissionRepository.findByControllerAndTitle(controller, permissionName);
     }
 
     @Override
