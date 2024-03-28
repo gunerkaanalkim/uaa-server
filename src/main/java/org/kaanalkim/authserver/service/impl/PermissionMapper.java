@@ -14,6 +14,7 @@ public class PermissionMapper implements BaseMapper<Permission, PermissionDTO> {
                 .title(permission.getTitle())
                 .controller(permission.getController())
                 .description(permission.getDescription())
+                .url(permission.getUrl())
                 .build();
     }
 
@@ -23,6 +24,7 @@ public class PermissionMapper implements BaseMapper<Permission, PermissionDTO> {
                 .id(permissionDTO.getId())
                 .title(permissionDTO.getTitle())
                 .controller(permissionDTO.getController())
+                .url(permissionDTO.getUrl())
                 .description(permissionDTO.getDescription())
                 .build();
     }
