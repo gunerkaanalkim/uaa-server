@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface RolePermissionService extends BaseCrudService<RolePermission, RolePermissionDTO> {
     RolePermission assignPermissionToRole(PermissionToRole permissionToRole);
-    RolePermission unassignPermissionToRole(PermissionToRole permissionToRole);
+    RolePermission revokePermissionToRole(PermissionToRole permissionToRole);
     Role unassignAllPermissionFromRole(PermissionsToRole permissionsToRole);
     List<RolePermission> assignAllPermissionToRole(PermissionsToRole permissionsToRole);
     Optional<RolePermission> findByRoleAndPermission(Role role, Permission permission);
