@@ -83,18 +83,6 @@ public class AuthController {
         return ResponseEntity.ok().body(roleUser);
     }
 
-    @PostMapping("assign-permission")
-    public ResponseEntity<RolePermission> assignPermissionToRole(@RequestBody PermissionToRole permissionToRole) {
-        RolePermission rolePermission = this.rolePermissionService.assignPermissionToRole(permissionToRole);
-        return ResponseEntity.ok().body(rolePermission);
-    }
-
-    @PostMapping("unassign-permission")
-    public ResponseEntity<RolePermission> unassignPermissionFromRole(@RequestBody PermissionToRole permissionToRole) {
-        RolePermission rolePermission = this.rolePermissionService.unassignPermissionToRole(permissionToRole);
-        return ResponseEntity.ok().body(rolePermission);
-    }
-
     @PostMapping("unassign-all-permission")
     public ResponseEntity<Role> unassignAllPermissionFromRole(@RequestBody PermissionsToRole permissionsToRole) {
         Role role = this.rolePermissionService.unassignAllPermissionFromRole(permissionsToRole);
@@ -105,12 +93,6 @@ public class AuthController {
     public ResponseEntity<List<RolePermission>> assignAllPermissionToRole(@RequestBody PermissionsToRole permissionsToRole) {
         List<RolePermission> rolePermissions = this.rolePermissionService.assignAllPermissionToRole(permissionsToRole);
         return ResponseEntity.ok().body(rolePermissions);
-    }
-
-    @GetMapping("role/{roleId}/get-assigned-permissions")
-    public ResponseEntity<List<Permission>> getAssignedPermissionOfRole(@PathVariable("roleId") Long roleId) {
-        List<Permission> assignedPermissionOfRole = this.rolePermissionService.getAssignedPermissionOfRole(roleId);
-        return ResponseEntity.ok().body(assignedPermissionOfRole);
     }
 }
    
