@@ -20,6 +20,7 @@ public class PermissionController extends AbstractController<Permission, Permiss
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected PermissionService getService() {
         return this.permissionService;
     }

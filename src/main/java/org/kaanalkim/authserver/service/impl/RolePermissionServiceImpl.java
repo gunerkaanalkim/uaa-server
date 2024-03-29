@@ -79,11 +79,13 @@ public class RolePermissionServiceImpl extends AbstractCrudService<RolePermissio
                 .role(role)
                 .build();
 
+        this.rolePermissionRepository.save(rolePermission);
+
         return rolePermission;
     }
 
     @Override
-    public RolePermission unassignPermissionToRole(PermissionToRole permissionToRole) {
+    public RolePermission revokePermissionToRole(PermissionToRole permissionToRole) {
         RoleDTO roleDTO = this.roleService.get(permissionToRole.getRoleId());
         PermissionDTO permissionDTO = this.permissionService.get(permissionToRole.getPermissionId());
 
@@ -92,7 +94,7 @@ public class RolePermissionServiceImpl extends AbstractCrudService<RolePermissio
 
         Optional<RolePermission> oldRoleAndPermission = this.findByRoleAndPermission(role, permission);
 
-        if (!oldRoleAndPermission.isPresent()) {
+        if (oldRoleAndPermission.isEmpty()) {
             throw new NotFoundException(super.getErrorMessage(ErrorCode.ROLE_USER_NOT_FOUND, ""));
         }
 
