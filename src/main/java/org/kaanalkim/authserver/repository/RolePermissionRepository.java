@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface RolePermissionRepository extends BaseRepository<RolePermission, Long> {
     Optional<RolePermission> findByRoleAndPermission(Role role, Permission permission);
-    List<RolePermission> deleteAllByRole(Role role);
+    void deleteAllByRole(Role role);
     List<RolePermission> findAllByRole(Role role);
 }
