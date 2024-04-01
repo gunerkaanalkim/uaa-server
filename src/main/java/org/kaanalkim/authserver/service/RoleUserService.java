@@ -11,6 +11,6 @@ import java.util.Optional;
 
 public interface RoleUserService extends BaseCrudService<RoleUser, RoleUserDTO> {
     RoleUser assignRoleToUser(RoleToUser roleToUser);
-    RoleUser unassignRoleToUser(RoleToUser roleToUser);
+    RoleUser revokeRoleToUser(RoleToUser roleToUser);
     Optional<RoleUser> findByRoleAndUser(Role role, User user);
 }
