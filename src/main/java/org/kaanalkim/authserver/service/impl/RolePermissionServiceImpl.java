@@ -18,6 +18,7 @@ import org.kaanalkim.authserver.service.RoleService;
 import org.kaanalkim.authserver.service.base.AbstractCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -104,7 +105,8 @@ public class RolePermissionServiceImpl extends AbstractCrudService<RolePermissio
     }
 
     @Override
-    public Role unassignAllPermissionFromRole(PermissionsToRole permissionsToRole) {
+    @Transactional
+    public Role revokeAllPermissionFromRole(PermissionsToRole permissionsToRole) {
         RoleDTO roleDTO = this.roleService.get(permissionsToRole.getRoleId());
         Role role = this.roleMapper.toEntity(roleDTO);
 
@@ -126,7 +128,7 @@ public class RolePermissionServiceImpl extends AbstractCrudService<RolePermissio
 
             Optional<RolePermission> oldRoleAndPermission = this.rolePermissionRepository.findByRoleAndPermission(role, permission);
 
-            if (!oldRoleAndPermission.isPresent()) {
+            if (oldRoleAndPermission.isEmpty()) {
                 RolePermission rolePermission = RolePermission.builder()
                         .permission(permission)
                         .role(role)

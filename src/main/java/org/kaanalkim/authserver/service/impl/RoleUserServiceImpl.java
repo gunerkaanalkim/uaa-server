@@ -82,7 +82,7 @@ public class RoleUserServiceImpl extends AbstractCrudService<RoleUser, RoleUserD
     }
 
     @Override
-    public RoleUser unassignRoleToUser(RoleToUser roleToUser) {
+    public RoleUser revokeRoleToUser(RoleToUser roleToUser) {
         RoleDTO roleDTO = this.roleService.get(roleToUser.getRoleId());
         UserDTO userDTO = this.userService.get(roleToUser.getUserId());
 

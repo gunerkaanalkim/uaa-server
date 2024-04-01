@@ -6,10 +6,14 @@ import org.kaanalkim.authserver.controller.base.AbstractController;
 import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.model.Role;
 import org.kaanalkim.authserver.model.RolePermission;
+import org.kaanalkim.authserver.model.RoleUser;
 import org.kaanalkim.authserver.payload.dto.RoleDTO;
 import org.kaanalkim.authserver.payload.request.PermissionToRole;
+import org.kaanalkim.authserver.payload.request.PermissionsToRole;
+import org.kaanalkim.authserver.payload.request.RoleToUser;
 import org.kaanalkim.authserver.service.RolePermissionService;
 import org.kaanalkim.authserver.service.RoleService;
+import org.kaanalkim.authserver.service.RoleUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +25,7 @@ import java.util.List;
 public class RoleController extends AbstractController<Role, RoleDTO> {
     private final RoleService roleService;
     private final RolePermissionService rolePermissionService;
+    private final RoleUserService roleUserService;
 
 
     @Override
@@ -43,9 +48,23 @@ public class RoleController extends AbstractController<Role, RoleDTO> {
         return ResponseEntity.ok().body(rolePermission);
     }
 
+
+    @PostMapping("assign-all-permission")
+    public ResponseEntity<List<RolePermission>> assignAllPermissionToRole(@RequestBody PermissionsToRole permissionsToRole) {
+        List<RolePermission> rolePermissions = this.rolePermissionService.assignAllPermissionToRole(permissionsToRole);
+        return ResponseEntity.ok().body(rolePermissions);
+    }
+
     @PostMapping("revoke-permission")
     public ResponseEntity<RolePermission> revokePermissionFromRole(@RequestBody PermissionToRole permissionToRole) {
         RolePermission rolePermission = this.rolePermissionService.revokePermissionToRole(permissionToRole);
         return ResponseEntity.ok().body(rolePermission);
     }
+
+    @PostMapping("revoke-all-permission")
+    public ResponseEntity<Role> revokeAllPermissionFromRole(@RequestBody PermissionsToRole permissionsToRole) {
+        Role role = this.rolePermissionService.revokeAllPermissionFromRole(permissionsToRole);
+        return ResponseEntity.ok().body(role);
+    }
+
 }

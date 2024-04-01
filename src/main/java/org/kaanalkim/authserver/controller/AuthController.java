@@ -1,6 +1,5 @@
 package org.kaanalkim.authserver.controller;
 
-import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.model.Role;
 import org.kaanalkim.authserver.model.RolePermission;
 import org.kaanalkim.authserver.model.RoleUser;
@@ -68,31 +67,6 @@ public class AuthController {
         JWTVerificationResponse jwtVerificationResponse = this.jwtTokenUtil.verifyToken(bearerToken.substring(7));
 
         return ResponseEntity.ok().body(jwtVerificationResponse);
-    }
-
-
-    @PostMapping("assign-role")
-    public ResponseEntity<RoleUser> assignRoleToUser(@RequestBody RoleToUser roleToUser) {
-        RoleUser roleUser = this.roleUserService.assignRoleToUser(roleToUser);
-        return ResponseEntity.ok().body(roleUser);
-    }
-
-    @PostMapping("unassign-role")
-    public ResponseEntity<RoleUser> unassignRoleFromUser(@RequestBody RoleToUser roleToUser) {
-        RoleUser roleUser = this.roleUserService.unassignRoleToUser(roleToUser);
-        return ResponseEntity.ok().body(roleUser);
-    }
-
-    @PostMapping("unassign-all-permission")
-    public ResponseEntity<Role> unassignAllPermissionFromRole(@RequestBody PermissionsToRole permissionsToRole) {
-        Role role = this.rolePermissionService.unassignAllPermissionFromRole(permissionsToRole);
-        return ResponseEntity.ok().body(role);
-    }
-
-    @PostMapping("assign-all-permission")
-    public ResponseEntity<List<RolePermission>> assignAllPermissionToRole(@RequestBody PermissionsToRole permissionsToRole) {
-        List<RolePermission> rolePermissions = this.rolePermissionService.assignAllPermissionToRole(permissionsToRole);
-        return ResponseEntity.ok().body(rolePermissions);
     }
 }
    
