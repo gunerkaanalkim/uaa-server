@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface RoleUserRepository extends BaseRepository<RoleUser, Long> {
-    Optional<RoleUser> findByRoleAndUser(Role role, User user);
+    Optional<RoleUser> findByUser(User user);
 }
