@@ -17,5 +17,5 @@ public interface RolePermissionService extends BaseCrudService<RolePermission, R
     Role revokeAllPermissionFromRole(PermissionsToRole permissionsToRole);
     List<RolePermission> assignAllPermissionToRole(PermissionsToRole permissionsToRole);
     Optional<RolePermission> findByRoleAndPermission(Role role, Permission permission);
-    List<Permission> getAssignedPermissionOfRole(Long roleId);
+    List<Permission> getAssignedPermissionsOfRole(Long roleId);
 }
