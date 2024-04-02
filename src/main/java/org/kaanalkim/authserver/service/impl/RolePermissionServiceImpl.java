@@ -144,7 +144,7 @@ public class RolePermissionServiceImpl extends AbstractCrudService<RolePermissio
     }
 
     @Override
-    public List<Permission> getAssignedPermissionOfRole(Long roleId) {
+    public List<Permission> getAssignedPermissionsOfRole(Long roleId) {
         RoleDTO roleDTO = this.roleService.get(roleId);
         Role role = this.roleMapper.toEntity(roleDTO);
 

@@ -11,10 +11,7 @@ import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -47,5 +44,11 @@ public class UserController extends AbstractController<User, UserDTO> {
     public ResponseEntity<RoleUser> revokeRoleFromUser(@RequestBody RoleToUser roleToUser) {
         RoleUser roleUser = this.roleUserService.revokeRoleToUser(roleToUser);
         return ResponseEntity.ok().body(roleUser);
+    }
+
+    @GetMapping("get-assigned-role/{userId}")
+    public ResponseEntity<RoleUser> getAssignedRole(@PathVariable("userId") int userId) {
+        RoleUser byUserId = this.roleUserService.findByUserId(userId);
+        return ResponseEntity.ok().body(byUserId);
     }
 }
