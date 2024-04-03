@@ -67,13 +67,11 @@ public class AuthController {
         return ResponseEntity.ok().body(jwtVerificationResponse);
     }
 
-    @GetMapping(value = "has-permission/{userId}/{requestPath}")
-    public ResponseEntity<AuthorizationVerificationResponse> hasPermission(
-            @PathVariable("userId") int userId,
-            @PathVariable("requestPath") String requestPath) {
+    @PostMapping(value = "has-permission")
+    public ResponseEntity<AuthorizationVerificationResponse> hasPermission(@RequestBody AuthorizationVerificationRequest authorizationVerificationRequest) {
 
         AuthorizationVerificationResponse authorizationVerificationResponse = this.roleUserService
-                .hasPermission(userId, requestPath);
+                .hasPermission(authorizationVerificationRequest.getUsername(), authorizationVerificationRequest.getRequestPath());
 
         return ResponseEntity.ok().body(authorizationVerificationResponse);
     }
