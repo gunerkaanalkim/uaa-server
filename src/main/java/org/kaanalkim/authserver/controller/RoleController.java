@@ -47,7 +47,7 @@ public class RoleController extends AbstractController<Role, RoleDTO> {
     }
 
 
-    @PostMapping("assign-all-permission")
+    @PostMapping("assign-all-permissions")
     public ResponseEntity<List<RolePermission>> assignAllPermissionToRole(@RequestBody PermissionsToRole permissionsToRole) {
         List<RolePermission> rolePermissions = this.rolePermissionService.assignAllPermissionToRole(permissionsToRole);
         return ResponseEntity.ok().body(rolePermissions);
@@ -59,7 +59,7 @@ public class RoleController extends AbstractController<Role, RoleDTO> {
         return ResponseEntity.ok().body(rolePermission);
     }
 
-    @PostMapping("revoke-all-permission")
+    @PostMapping("revoke-all-permissions")
     public ResponseEntity<Role> revokeAllPermissionFromRole(@RequestBody PermissionsToRole permissionsToRole) {
         Role role = this.rolePermissionService.revokeAllPermissionFromRole(permissionsToRole);
         return ResponseEntity.ok().body(role);
