@@ -12,19 +12,19 @@ import org.kaanalkim.authserver.payload.dto.RoleUserDTO;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
 import org.kaanalkim.authserver.payload.request.RoleToUser;
 import org.kaanalkim.authserver.payload.response.AuthorizationVerificationResponse;
+import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.repository.RoleUserRepository;
 import org.kaanalkim.authserver.service.RolePermissionService;
 import org.kaanalkim.authserver.service.RoleService;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
 import org.kaanalkim.authserver.service.base.AbstractCrudService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -103,11 +103,14 @@ public class RoleUserServiceImpl extends AbstractCrudService<RoleUser, RoleUserD
     }
 
     @Override
-    public AuthorizationVerificationResponse hasPermission(int userId, String requestPath) {
-        UserDTO userDTO = this.userService.get((long) userId);
-        User user = this.userMapper.toEntity(userDTO);
+    public AuthorizationVerificationResponse hasPermission(String username, String requestPath) {
+        Optional<User> user = this.userService.findByUsername(username);
 
-        Optional<RoleUser> roleUser = this.roleUserRepository.findByUser(user);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("Username not found.");
+        }
+
+        Optional<RoleUser> roleUser = this.roleUserRepository.findByUser(user.get());
 
         if (roleUser.isPresent()) {
             List<Permission> assignedPermissionsOfRole = this.rolePermissionService
