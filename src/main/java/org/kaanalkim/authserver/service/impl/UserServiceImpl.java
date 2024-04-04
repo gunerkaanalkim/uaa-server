@@ -4,6 +4,7 @@ import org.kaanalkim.authserver.exception.NotFoundException;
 import org.kaanalkim.authserver.exception.UserAlreadyRegisteredException;
 import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
+import org.kaanalkim.authserver.mapper.UserMapper;
 import org.kaanalkim.authserver.payload.request.ChangePassword;
 import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.repository.UserRepository;

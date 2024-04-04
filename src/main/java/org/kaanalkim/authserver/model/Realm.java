@@ -8,22 +8,17 @@ import lombok.experimental.SuperBuilder;
 import org.kaanalkim.authserver.model.base.AbstractEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Entity(name = "Role")
+@Entity(name = "Realm")
 @Table
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role extends AbstractEntity {
-    @ManyToOne
-    @JoinColumn(name = "realm_id", referencedColumnName = "id")
-    private Realm realm;
-
+public class Realm extends AbstractEntity {
     private String name;
     private String code;
+    private String description;
 }

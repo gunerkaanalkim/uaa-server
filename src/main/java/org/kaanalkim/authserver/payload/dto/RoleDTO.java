@@ -3,7 +3,7 @@ package org.kaanalkim.authserver.payload.dto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.kaanalkim.authserver.payload.mapper.AbstractDTO;
+import org.kaanalkim.authserver.mapper.AbstractDTO;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

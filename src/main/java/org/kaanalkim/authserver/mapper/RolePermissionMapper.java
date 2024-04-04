@@ -1,4 +1,4 @@
-package org.kaanalkim.authserver.service.impl;
+package org.kaanalkim.authserver.mapper;
 
 import org.kaanalkim.authserver.model.RolePermission;
 import org.kaanalkim.authserver.payload.dto.RolePermissionDTO;
