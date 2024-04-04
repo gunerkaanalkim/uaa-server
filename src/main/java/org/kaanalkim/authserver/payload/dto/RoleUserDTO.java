@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.kaanalkim.authserver.model.Role;
 import org.kaanalkim.authserver.model.User;
-import org.kaanalkim.authserver.payload.mapper.AbstractDTO;
+import org.kaanalkim.authserver.mapper.AbstractDTO;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

@@ -1,10 +1,9 @@
 package org.kaanalkim.authserver.controller.base;
 
 import org.kaanalkim.authserver.model.base.AbstractEntity;
-import org.kaanalkim.authserver.payload.mapper.AbstractDTO;
+import org.kaanalkim.authserver.mapper.AbstractDTO;
 import org.kaanalkim.authserver.service.base.BaseCrudService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

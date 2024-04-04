@@ -8,6 +8,8 @@ import lombok.experimental.SuperBuilder;
 import org.kaanalkim.authserver.model.base.AbstractEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Data
@@ -18,6 +20,11 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Permission extends AbstractEntity {
+    @ManyToOne
+    @JoinColumn(name = "realm_id", referencedColumnName = "id")
+    private Realm realm;
+
+    private String groupName;
     private String controller;
     private String title;
     private String description;

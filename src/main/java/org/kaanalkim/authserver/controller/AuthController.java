@@ -1,11 +1,6 @@
 package org.kaanalkim.authserver.controller;
 
 import lombok.AllArgsConstructor;
-import org.kaanalkim.authserver.model.Role;
-import org.kaanalkim.authserver.model.RolePermission;
-import org.kaanalkim.authserver.model.RoleUser;
-import org.kaanalkim.authserver.model.User;
-import org.kaanalkim.authserver.payload.dto.UserDTO;
 import org.kaanalkim.authserver.payload.request.*;
 import org.kaanalkim.authserver.payload.response.AuthResponse;
 import org.kaanalkim.authserver.payload.response.AuthorizationVerificationResponse;
@@ -13,18 +8,13 @@ import org.kaanalkim.authserver.payload.response.JWTVerificationResponse;
 import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.security.JwtTokenUtil;
 import org.kaanalkim.authserver.service.AuthenticationService;
-import org.kaanalkim.authserver.service.RolePermissionService;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
-import org.kaanalkim.authserver.service.impl.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("authenticate")

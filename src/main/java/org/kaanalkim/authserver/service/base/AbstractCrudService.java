@@ -3,7 +3,7 @@ package org.kaanalkim.authserver.service.base;
 import org.kaanalkim.authserver.exception.ObjectNotFoundById;
 import org.kaanalkim.authserver.model.base.AbstractEntity;
 import org.kaanalkim.authserver.model.enums.ErrorCode;
-import org.kaanalkim.authserver.payload.mapper.AbstractDTO;
+import org.kaanalkim.authserver.mapper.AbstractDTO;
 import org.kaanalkim.authserver.repository.base.BaseRepository;
 import org.kaanalkim.authserver.service.mapper.BaseMapper;
 import org.springframework.beans.BeanUtils;

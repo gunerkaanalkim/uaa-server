@@ -1,4 +1,4 @@
-package org.kaanalkim.authserver.service.impl;
+package org.kaanalkim.authserver.mapper;
 
 import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.payload.dto.PermissionDTO;
@@ -15,6 +15,7 @@ public class PermissionMapper implements BaseMapper<Permission, PermissionDTO> {
                 .controller(permission.getController())
                 .description(permission.getDescription())
                 .url(permission.getUrl())
+                .groupName(permission.getGroupName())
                 .build();
     }
 
@@ -26,6 +27,7 @@ public class PermissionMapper implements BaseMapper<Permission, PermissionDTO> {
                 .controller(permissionDTO.getController())
                 .url(permissionDTO.getUrl())
                 .description(permissionDTO.getDescription())
+                .groupName(permissionDTO.getGroupName())
                 .build();
     }
 }
