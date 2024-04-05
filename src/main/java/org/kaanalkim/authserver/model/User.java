@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Table(name = "users")
 @SuperBuilder
 public class User extends AbstractEntity {
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "realm_id", referencedColumnName = "id")
     private Realm realm;
 
