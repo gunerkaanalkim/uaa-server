@@ -11,7 +11,7 @@ public abstract class AbstractService {
     public String className = getName(getClass());
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected String getName(Class clazz) {
+    protected String getName(@SuppressWarnings("rawtypes") Class clazz) {
         String[] strings = clazz.getName().split("\\.");
         if (strings.length > 0) {
             return strings[strings.length - 1];

@@ -1,7 +1,13 @@
 package org.kaanalkim.authserver.service.impl;
 
-import lombok.AllArgsConstructor;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.kaanalkim.authserver.exception.RoleAlreadyAssignedException;
+import org.kaanalkim.authserver.mapper.RoleMapper;
+import org.kaanalkim.authserver.mapper.RoleUserMapper;
+import org.kaanalkim.authserver.mapper.UserMapper;
 import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.model.Role;
 import org.kaanalkim.authserver.model.RoleUser;
@@ -10,9 +16,6 @@ import org.kaanalkim.authserver.model.enums.ErrorCode;
 import org.kaanalkim.authserver.payload.dto.RoleDTO;
 import org.kaanalkim.authserver.payload.dto.RoleUserDTO;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
-import org.kaanalkim.authserver.mapper.RoleMapper;
-import org.kaanalkim.authserver.mapper.RoleUserMapper;
-import org.kaanalkim.authserver.mapper.UserMapper;
 import org.kaanalkim.authserver.payload.request.RoleToUser;
 import org.kaanalkim.authserver.payload.response.AuthorizationVerificationResponse;
 import org.kaanalkim.authserver.repository.RoleUserRepository;
@@ -24,9 +27,7 @@ import org.kaanalkim.authserver.service.base.AbstractCrudService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -37,20 +38,8 @@ public class RoleUserServiceImpl extends AbstractCrudService<RoleUser, RoleUserD
     private final UserMapper userMapper;
     private final RoleService roleService;
     private final UserService userService;
-
     private final RolePermissionService rolePermissionService;
 
-    @Override
-    @SuppressWarnings("unchecked")
-    protected RoleUserRepository getRepository() {
-        return this.roleUserRepository;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    protected RoleUserMapper getMapper() {
-        return this.roleUserMapper;
-    }
 
     @Override
     public RoleUser assignRoleToUser(RoleToUser roleToUser) {
@@ -123,7 +112,7 @@ public class RoleUserServiceImpl extends AbstractCrudService<RoleUser, RoleUserD
                     .filter(permission -> {
                         String requestPathOfPermission = String.format("/%s/%s", permission.getController(), permission.getUrl());
 
-                        return requestPathOfPermission.equalsIgnoreCase(requestPath);
+                        return requestPath.contains(requestPathOfPermission);
                     })
                     .findFirst()
                     .orElse(null);
@@ -138,5 +127,17 @@ public class RoleUserServiceImpl extends AbstractCrudService<RoleUser, RoleUserD
         return AuthorizationVerificationResponse.builder()
                 .hasPermission(false)
                 .build();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected RoleUserRepository getRepository() {
+        return this.roleUserRepository;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected RoleUserMapper getMapper() {
+        return this.roleUserMapper;
     }
 }

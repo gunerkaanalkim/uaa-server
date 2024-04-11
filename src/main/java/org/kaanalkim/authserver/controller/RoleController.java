@@ -1,7 +1,8 @@
 package org.kaanalkim.authserver.controller;
 
 
-import lombok.AllArgsConstructor;
+import java.util.List;
+
 import org.kaanalkim.authserver.controller.base.AbstractController;
 import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.model.Role;
@@ -11,11 +12,15 @@ import org.kaanalkim.authserver.payload.request.PermissionToRole;
 import org.kaanalkim.authserver.payload.request.PermissionsToRole;
 import org.kaanalkim.authserver.service.RolePermissionService;
 import org.kaanalkim.authserver.service.RoleService;
-import org.kaanalkim.authserver.service.RoleUserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("role")
@@ -23,15 +28,6 @@ import java.util.List;
 public class RoleController extends AbstractController<Role, RoleDTO> {
     private final RoleService roleService;
     private final RolePermissionService rolePermissionService;
-    private final RoleUserService roleUserService;
-
-
-    @Override
-    @SuppressWarnings("unchecked")
-    protected RoleService getService() {
-        return this.roleService;
-    }
-
 
     @GetMapping("/get-assigned-permissions/{roleId}")
     public ResponseEntity<List<Permission>> getAssignedPermissionOfRole(@PathVariable("roleId") Long roleId) {
@@ -53,6 +49,7 @@ public class RoleController extends AbstractController<Role, RoleDTO> {
         return ResponseEntity.ok().body(rolePermissions);
     }
 
+
     @PostMapping("revoke-permission")
     public ResponseEntity<RolePermission> revokePermissionFromRole(@RequestBody PermissionToRole permissionToRole) {
         RolePermission rolePermission = this.rolePermissionService.revokePermissionToRole(permissionToRole);
@@ -63,6 +60,12 @@ public class RoleController extends AbstractController<Role, RoleDTO> {
     public ResponseEntity<Role> revokeAllPermissionFromRole(@RequestBody PermissionsToRole permissionsToRole) {
         Role role = this.rolePermissionService.revokeAllPermissionFromRole(permissionsToRole);
         return ResponseEntity.ok().body(role);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected RoleService getService() {
+        return this.roleService;
     }
 
 }

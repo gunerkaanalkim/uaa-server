@@ -1,6 +1,5 @@
 package org.kaanalkim.authserver.payload.request;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data

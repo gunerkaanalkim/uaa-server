@@ -1,10 +1,11 @@
 package org.kaanalkim.authserver.mapper;
 
-import lombok.AllArgsConstructor;
+import org.kaanalkim.authserver.mapper.base.BaseMapper;
 import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
-import org.kaanalkim.authserver.service.mapper.BaseMapper;
 import org.springframework.stereotype.Service;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -12,7 +13,7 @@ public class UserMapper implements BaseMapper<User, UserDTO> {
     private final RealmMapper realmMapper;
     @Override
     public UserDTO toDTO(User user) {
-        UserDTO build = UserDTO.builder()
+        return UserDTO.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .surname(user.getSurname())
@@ -21,12 +22,11 @@ public class UserMapper implements BaseMapper<User, UserDTO> {
                 .username(user.getUsername())
                 .realm(realmMapper.toDTO(user.getRealm()))
                 .build();
-        return build;
     }
 
     @Override
     public User toEntity(UserDTO userDTO) {
-        User build = User.builder()
+        return User.builder()
                 .id(userDTO.getId())
                 .name(userDTO.getName())
                 .surname(userDTO.getSurname())
@@ -35,6 +35,6 @@ public class UserMapper implements BaseMapper<User, UserDTO> {
                 .username(userDTO.getUsername())
                 .realm(this.realmMapper.toEntity(userDTO.getRealm()))
                 .build();
-        return build;
     }
 }
+
