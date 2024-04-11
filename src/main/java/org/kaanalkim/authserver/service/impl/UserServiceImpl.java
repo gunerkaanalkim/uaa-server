@@ -1,46 +1,30 @@
 package org.kaanalkim.authserver.service.impl;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 import org.kaanalkim.authserver.exception.NotFoundException;
 import org.kaanalkim.authserver.exception.UserAlreadyRegisteredException;
+import org.kaanalkim.authserver.mapper.UserMapper;
 import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
-import org.kaanalkim.authserver.mapper.UserMapper;
 import org.kaanalkim.authserver.payload.request.ChangePassword;
 import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.repository.UserRepository;
 import org.kaanalkim.authserver.service.UserService;
 import org.kaanalkim.authserver.service.base.AbstractCrudService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl extends AbstractCrudService<User, UserDTO> implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    protected UserRepository getRepository() {
-        return this.userRepository;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    protected UserMapper getMapper() {
-        return this.userMapper;
-    }
 
     @Override
     public Optional<User> findByUsername(String username) {
@@ -99,5 +83,17 @@ public class UserServiceImpl extends AbstractCrudService<User, UserDTO> implemen
     @Override
     public UserInfo getByUsername(String username) {
         return this.userRepository.getByUsername(username);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected UserRepository getRepository() {
+        return this.userRepository;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected UserMapper getMapper() {
+        return this.userMapper;
     }
 }

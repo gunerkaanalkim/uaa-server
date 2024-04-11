@@ -1,7 +1,15 @@
 package org.kaanalkim.authserver.service.impl;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.kaanalkim.authserver.exception.NotFoundException;
 import org.kaanalkim.authserver.exception.PermissionAlreadyAssignedException;
+import org.kaanalkim.authserver.mapper.PermissionMapper;
+import org.kaanalkim.authserver.mapper.RoleMapper;
+import org.kaanalkim.authserver.mapper.RolePermissionMapper;
 import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.model.Role;
 import org.kaanalkim.authserver.model.RolePermission;
@@ -9,9 +17,6 @@ import org.kaanalkim.authserver.model.enums.ErrorCode;
 import org.kaanalkim.authserver.payload.dto.PermissionDTO;
 import org.kaanalkim.authserver.payload.dto.RoleDTO;
 import org.kaanalkim.authserver.payload.dto.RolePermissionDTO;
-import org.kaanalkim.authserver.mapper.PermissionMapper;
-import org.kaanalkim.authserver.mapper.RoleMapper;
-import org.kaanalkim.authserver.mapper.RolePermissionMapper;
 import org.kaanalkim.authserver.payload.request.PermissionToRole;
 import org.kaanalkim.authserver.payload.request.PermissionsToRole;
 import org.kaanalkim.authserver.repository.RolePermissionRepository;
@@ -19,16 +24,13 @@ import org.kaanalkim.authserver.service.PermissionService;
 import org.kaanalkim.authserver.service.RolePermissionService;
 import org.kaanalkim.authserver.service.RoleService;
 import org.kaanalkim.authserver.service.base.AbstractCrudService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class RolePermissionServiceImpl extends AbstractCrudService<RolePermission, RolePermissionDTO> implements RolePermissionService {
     private final RolePermissionRepository rolePermissionRepository;
     private final RoleService roleService;
@@ -36,28 +38,6 @@ public class RolePermissionServiceImpl extends AbstractCrudService<RolePermissio
     private final RolePermissionMapper rolePermissionMapper;
     private final RoleMapper roleMapper;
     private final PermissionMapper permissionMapper;
-
-    @Autowired
-    public RolePermissionServiceImpl(RolePermissionRepository rolePermissionRepository, RoleService roleService, PermissionService permissionService, RolePermissionMapper rolePermissionMapper, RoleMapper roleMapper, PermissionMapper permissionMapper) {
-        this.rolePermissionRepository = rolePermissionRepository;
-        this.roleService = roleService;
-        this.permissionService = permissionService;
-        this.rolePermissionMapper = rolePermissionMapper;
-        this.roleMapper = roleMapper;
-        this.permissionMapper = permissionMapper;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    protected RolePermissionRepository getRepository() {
-        return this.rolePermissionRepository;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    protected RolePermissionMapper getMapper() {
-        return this.rolePermissionMapper;
-    }
 
     @Override
     public Optional<RolePermission> findByRoleAndPermission(Role role, Permission permission) {
@@ -154,5 +134,17 @@ public class RolePermissionServiceImpl extends AbstractCrudService<RolePermissio
         List<RolePermission> allByRole = this.rolePermissionRepository.findAllByRole(role);
 
         return allByRole.stream().map(RolePermission::getPermission).collect(Collectors.toList());
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected RolePermissionRepository getRepository() {
+        return this.rolePermissionRepository;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected RolePermissionMapper getMapper() {
+        return this.rolePermissionMapper;
     }
 }

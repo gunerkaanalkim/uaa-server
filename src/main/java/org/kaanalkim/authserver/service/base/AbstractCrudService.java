@@ -1,27 +1,23 @@
 package org.kaanalkim.authserver.service.base;
 
+import java.beans.FeatureDescriptor;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.kaanalkim.authserver.exception.ObjectNotFoundById;
+import org.kaanalkim.authserver.mapper.AbstractDTO;
+import org.kaanalkim.authserver.mapper.base.BaseMapper;
 import org.kaanalkim.authserver.model.base.AbstractEntity;
 import org.kaanalkim.authserver.model.enums.ErrorCode;
-import org.kaanalkim.authserver.mapper.AbstractDTO;
 import org.kaanalkim.authserver.repository.base.BaseRepository;
-import org.kaanalkim.authserver.service.mapper.BaseMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.beans.FeatureDescriptor;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public abstract class AbstractCrudService<T extends AbstractEntity, D extends AbstractDTO> extends AbstractService {
-    protected abstract <K extends BaseRepository<T, Long>> K getRepository();
-
-    protected abstract <M extends BaseMapper<T, D>> M getMapper();
-
     public D save(D d) {
         final T t = getMapper().toEntity(d);
         getRepository().save(t);
@@ -103,6 +99,10 @@ public abstract class AbstractCrudService<T extends AbstractEntity, D extends Ab
 
         return getPager(calculatedPageNumber, pageSize, column, order);
     }
+
+    protected abstract <K extends BaseRepository<T, Long>> K getRepository();
+
+    protected abstract <M extends BaseMapper<T, D>> M getMapper();
 
     private String[] getNullPropertyNames(T t) {
         final BeanWrapper wrappedSource = new BeanWrapperImpl(t);

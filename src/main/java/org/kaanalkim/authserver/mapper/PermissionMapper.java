@@ -1,8 +1,8 @@
 package org.kaanalkim.authserver.mapper;
 
+import org.kaanalkim.authserver.mapper.base.BaseMapper;
 import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.payload.dto.PermissionDTO;
-import org.kaanalkim.authserver.service.mapper.BaseMapper;
 import org.springframework.stereotype.Service;
 
 @Service
