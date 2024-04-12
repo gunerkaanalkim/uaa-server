@@ -3,7 +3,7 @@ package org.kaanalkim.authserver.controller;
 
 import lombok.AllArgsConstructor;
 import org.kaanalkim.authserver.controller.base.AbstractController;
-import org.kaanalkim.authserver.mapper.PermissionMapper;
+import org.kaanalkim.authserver.mapper.impl.PermissionMapper;
 import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.payload.dto.PermissionDTO;
 import org.kaanalkim.authserver.service.PermissionService;

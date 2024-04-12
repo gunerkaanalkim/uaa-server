@@ -2,8 +2,8 @@ package org.kaanalkim.authserver.controller;
 
 import lombok.AllArgsConstructor;
 import org.kaanalkim.authserver.controller.base.AbstractController;
-import org.kaanalkim.authserver.mapper.RoleUserMapper;
 import org.kaanalkim.authserver.mapper.UserMapper;
+import org.kaanalkim.authserver.mapper.impl.RoleUserMapperImpl;
 import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.dto.RoleUserDTO;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
@@ -22,7 +22,7 @@ public class UserController extends AbstractController<User, UserDTO> {
     private final UserService userService;
     private final RoleUserService roleUserService;
     private final UserMapper userMapper;
-    private final RoleUserMapper roleUserMapper;
+    private final RoleUserMapperImpl roleUserMapperImpl;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -45,19 +45,19 @@ public class UserController extends AbstractController<User, UserDTO> {
 
     @PostMapping("assign-role")
     public ResponseEntity<RoleUserDTO> assignRoleToUser(@RequestBody RoleToUser roleToUser) {
-        RoleUserDTO roleUserDTO = this.roleUserMapper.toDTO(this.roleUserService.assignRoleToUser(roleToUser));
+        RoleUserDTO roleUserDTO = this.roleUserMapperImpl.toDTO(this.roleUserService.assignRoleToUser(roleToUser));
         return ResponseEntity.ok().body(roleUserDTO);
     }
 
     @PostMapping("revoke-role")
     public ResponseEntity<RoleUserDTO> revokeRoleFromUser(@RequestBody RoleToUser roleToUser) {
-        RoleUserDTO roleUserDTO = this.roleUserMapper.toDTO(this.roleUserService.revokeRoleToUser(roleToUser));
+        RoleUserDTO roleUserDTO = this.roleUserMapperImpl.toDTO(this.roleUserService.revokeRoleToUser(roleToUser));
         return ResponseEntity.ok().body(roleUserDTO);
     }
 
     @GetMapping("get-assigned-role/{userId}")
     public ResponseEntity<RoleUserDTO> getAssignedRole(@PathVariable("userId") int userId) {
-        RoleUserDTO roleUserDTO = this.roleUserMapper.toDTO(this.roleUserService.findByUserId(userId));
+        RoleUserDTO roleUserDTO = this.roleUserMapperImpl.toDTO(this.roleUserService.findByUserId(userId));
         return ResponseEntity.ok().body(roleUserDTO);
     }
 
