@@ -1,4 +1,4 @@
-package org.kaanalkim.authserver.mapper;
+package org.kaanalkim.authserver.payload.mapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
