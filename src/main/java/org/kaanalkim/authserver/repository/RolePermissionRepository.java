@@ -3,7 +3,7 @@ package org.kaanalkim.authserver.repository;
 import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.model.Role;
 import org.kaanalkim.authserver.model.RolePermission;
-import org.kaanalkim.authserver.repository.base.BaseRepository;
+import org.kaanalkim.common.repository.base.BaseRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

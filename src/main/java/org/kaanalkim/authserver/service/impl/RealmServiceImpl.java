@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.kaanalkim.authserver.model.Realm;
 import org.kaanalkim.authserver.repository.RealmRepository;
 import org.kaanalkim.authserver.service.RealmService;
-import org.kaanalkim.authserver.service.base.AbstractCrudService;
+import org.kaanalkim.common.service.base.AbstractCrudService;
 import org.springframework.stereotype.Service;
 
 @Service

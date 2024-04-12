@@ -1,7 +1,6 @@
 package org.kaanalkim.authserver.controller;
 
 import lombok.AllArgsConstructor;
-import org.kaanalkim.authserver.controller.base.AbstractController;
 import org.kaanalkim.authserver.mapper.UserMapper;
 import org.kaanalkim.authserver.mapper.impl.RoleUserMapperImpl;
 import org.kaanalkim.authserver.model.User;
@@ -11,6 +10,7 @@ import org.kaanalkim.authserver.payload.request.ChangePassword;
 import org.kaanalkim.authserver.payload.request.RoleToUser;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
+import org.kaanalkim.common.controller.base.AbstractController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

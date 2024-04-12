@@ -3,7 +3,7 @@ package org.kaanalkim.authserver.service;
 import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.request.ChangePassword;
 import org.kaanalkim.authserver.payload.response.UserInfo;
-import org.kaanalkim.authserver.service.base.BaseCrudService;
+import org.kaanalkim.common.service.base.BaseCrudService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Optional;

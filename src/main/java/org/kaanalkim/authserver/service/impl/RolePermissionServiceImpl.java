@@ -1,19 +1,19 @@
 package org.kaanalkim.authserver.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.kaanalkim.authserver.exception.NotFoundException;
-import org.kaanalkim.authserver.exception.PermissionAlreadyAssignedException;
 import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.model.Role;
 import org.kaanalkim.authserver.model.RolePermission;
-import org.kaanalkim.authserver.model.enums.ErrorCode;
 import org.kaanalkim.authserver.payload.request.PermissionToRole;
 import org.kaanalkim.authserver.payload.request.PermissionsToRole;
 import org.kaanalkim.authserver.repository.RolePermissionRepository;
 import org.kaanalkim.authserver.service.PermissionService;
 import org.kaanalkim.authserver.service.RolePermissionService;
 import org.kaanalkim.authserver.service.RoleService;
-import org.kaanalkim.authserver.service.base.AbstractCrudService;
+import org.kaanalkim.common.exception.NotFoundException;
+import org.kaanalkim.common.exception.PermissionAlreadyAssignedException;
+import org.kaanalkim.common.model.enums.ErrorCode;
+import org.kaanalkim.common.service.base.AbstractCrudService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

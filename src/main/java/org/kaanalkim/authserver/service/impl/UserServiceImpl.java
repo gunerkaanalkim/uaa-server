@@ -1,13 +1,13 @@
 package org.kaanalkim.authserver.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.kaanalkim.authserver.exception.NotFoundException;
 import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.request.ChangePassword;
 import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.repository.UserRepository;
 import org.kaanalkim.authserver.service.UserService;
-import org.kaanalkim.authserver.service.base.AbstractCrudService;
+import org.kaanalkim.common.exception.NotFoundException;
+import org.kaanalkim.common.service.base.AbstractCrudService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

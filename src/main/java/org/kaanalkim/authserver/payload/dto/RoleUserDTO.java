@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.kaanalkim.authserver.model.Role;
 import org.kaanalkim.authserver.model.User;
-import org.kaanalkim.authserver.payload.mapper.AbstractDTO;
+import org.kaanalkim.common.model.base.AbstractDTO;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

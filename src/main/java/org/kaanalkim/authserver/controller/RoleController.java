@@ -2,7 +2,6 @@ package org.kaanalkim.authserver.controller;
 
 
 import lombok.AllArgsConstructor;
-import org.kaanalkim.authserver.controller.base.AbstractController;
 import org.kaanalkim.authserver.mapper.RoleMapper;
 import org.kaanalkim.authserver.mapper.impl.PermissionMapper;
 import org.kaanalkim.authserver.mapper.impl.RolePermissionMapperImpl;
@@ -14,6 +13,7 @@ import org.kaanalkim.authserver.payload.request.PermissionToRole;
 import org.kaanalkim.authserver.payload.request.PermissionsToRole;
 import org.kaanalkim.authserver.service.RolePermissionService;
 import org.kaanalkim.authserver.service.RoleService;
+import org.kaanalkim.common.controller.base.AbstractController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

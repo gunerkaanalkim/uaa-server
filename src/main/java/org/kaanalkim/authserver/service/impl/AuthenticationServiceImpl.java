@@ -1,8 +1,8 @@
 package org.kaanalkim.authserver.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.kaanalkim.authserver.exception.UserDisabledException;
 import org.kaanalkim.authserver.service.AuthenticationService;
+import org.kaanalkim.common.exception.UserDisabledException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;

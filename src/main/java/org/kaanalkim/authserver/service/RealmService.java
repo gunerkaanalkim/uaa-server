@@ -1,7 +1,7 @@
 package org.kaanalkim.authserver.service;
 
 import org.kaanalkim.authserver.model.Realm;
-import org.kaanalkim.authserver.service.base.BaseCrudService;
+import org.kaanalkim.common.service.base.BaseCrudService;
 
 public interface RealmService extends BaseCrudService<Realm> {
 }

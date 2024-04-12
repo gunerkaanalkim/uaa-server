@@ -1,12 +1,10 @@
 package org.kaanalkim.authserver.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.kaanalkim.authserver.exception.RoleAlreadyAssignedException;
 import org.kaanalkim.authserver.model.Permission;
 import org.kaanalkim.authserver.model.Role;
 import org.kaanalkim.authserver.model.RoleUser;
 import org.kaanalkim.authserver.model.User;
-import org.kaanalkim.authserver.model.enums.ErrorCode;
 import org.kaanalkim.authserver.payload.request.RoleToUser;
 import org.kaanalkim.authserver.payload.response.AuthorizationVerificationResponse;
 import org.kaanalkim.authserver.repository.RoleUserRepository;
@@ -14,7 +12,9 @@ import org.kaanalkim.authserver.service.RolePermissionService;
 import org.kaanalkim.authserver.service.RoleService;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
-import org.kaanalkim.authserver.service.base.AbstractCrudService;
+import org.kaanalkim.common.exception.RoleAlreadyAssignedException;
+import org.kaanalkim.common.model.enums.ErrorCode;
+import org.kaanalkim.common.service.base.AbstractCrudService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.kaanalkim.authserver.model.base.AbstractEntity;
+import org.kaanalkim.common.model.base.AbstractEntity;
 
 import javax.persistence.*;
 
