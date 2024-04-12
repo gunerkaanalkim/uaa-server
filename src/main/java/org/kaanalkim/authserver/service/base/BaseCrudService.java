@@ -5,22 +5,22 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface BaseCrudService<T, D> {
-    D save(D d);
+public interface BaseCrudService<T> {
+    T save(T T);
 
-    List<D> saveAll(List<D> d);
+    List<T> saveAll(List<T> T);
 
-    D update(D d);
+    T update(T T);
 
-    D get(Long id);
+    T get(Long iT);
 
     Page<T> getAll(Pageable pageable);
 
-    List<D> getAllWithoutPage();
+    List<T> getAllWithoutPage();
 
-    D delete(Long id);
+    T delete(Long iT);
 
-    List<D> deleteAll(List<D> d);
+    List<T> deleteAll(List<T> T);
 
-    Pageable getPaging(Integer pageNo, Integer pageSize, String column, String order);
+    Pageable getPaging(Integer pageNo, Integer pageSize, String column, String orTer);
 }
