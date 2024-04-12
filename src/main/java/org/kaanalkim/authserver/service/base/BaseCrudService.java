@@ -1,5 +1,6 @@
 package org.kaanalkim.authserver.service.base;
 
+import org.kaanalkim.authserver.repository.base.SearchFilterRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -22,5 +23,7 @@ public interface BaseCrudService<T> {
 
     List<T> deleteAll(List<T> T);
 
-    Pageable getPaging(Integer pageNo, Integer pageSize, String column, String orTer);
+    Pageable getPaging(Integer pageNo, Integer pageSize, String column, String order);
+
+    Page<T> filter(SearchFilterRequest searchFilterRequest, Pageable pageable);
 }

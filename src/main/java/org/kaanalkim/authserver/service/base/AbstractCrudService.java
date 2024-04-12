@@ -4,11 +4,14 @@ import org.kaanalkim.authserver.exception.ObjectNotFoundById;
 import org.kaanalkim.authserver.model.base.AbstractEntity;
 import org.kaanalkim.authserver.model.enums.ErrorCode;
 import org.kaanalkim.authserver.repository.base.BaseRepository;
+import org.kaanalkim.authserver.repository.base.GenericSpecification;
+import org.kaanalkim.authserver.repository.base.SearchFilterRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.beans.FeatureDescriptor;
 import java.util.List;
@@ -103,5 +106,12 @@ public abstract class AbstractCrudService<T extends AbstractEntity> extends Abst
                 .map(FeatureDescriptor::getName)
                 .filter(propertyName -> wrappedSource.getPropertyValue(propertyName) == null)
                 .toArray(String[]::new);
+    }
+
+    public Page<T> filter(SearchFilterRequest searchFilterRequest, Pageable pageable) {
+        GenericSpecification<T> genericSpecification = new GenericSpecification<>();
+        Specification<T> specification = genericSpecification.filter(searchFilterRequest);
+
+        return getRepository().findAll(specification, pageable);
     }
 }

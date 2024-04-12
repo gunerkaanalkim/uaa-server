@@ -3,8 +3,10 @@ package org.kaanalkim.authserver.controller.base;
 import org.kaanalkim.authserver.mapper.base.BaseMapper;
 import org.kaanalkim.authserver.model.base.AbstractEntity;
 import org.kaanalkim.authserver.payload.mapper.AbstractDTO;
+import org.kaanalkim.authserver.repository.base.SearchFilterRequest;
 import org.kaanalkim.authserver.service.base.BaseCrudService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +77,14 @@ public abstract class AbstractController<T extends AbstractEntity, D extends Abs
         getService().deleteAll(entityList);
 
         return ResponseEntity.ok().body(all);
+    }
+
+    @PostMapping("filter")
+    public ResponseEntity<Page<T>> filter(@Validated @RequestBody SearchFilterRequest searchFilterRequest) {
+        Pageable paging = getService().getPaging(searchFilterRequest.getPageNo(), searchFilterRequest.getPageSize(), searchFilterRequest.getColumn(), searchFilterRequest.getOrder());
+        Page<T> filteredResults = getService().filter(searchFilterRequest, paging);
+
+        return ResponseEntity.ok().body(filteredResults);
     }
 
 }
