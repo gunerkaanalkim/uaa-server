@@ -66,10 +66,14 @@ public class AuthController {
     }
 
     @PostMapping(value = "has-permission")
-    public ResponseEntity<AuthorizationVerificationResponse> hasPermission(@RequestBody AuthorizationVerificationRequest authorizationVerificationRequest) {
-
-        AuthorizationVerificationResponse authorizationVerificationResponse = this.roleUserService
-                .hasPermission(authorizationVerificationRequest.getUsername(), authorizationVerificationRequest.getRequestPath());
+    public ResponseEntity<AuthorizationVerificationResponse> hasPermission(
+            @RequestBody AuthorizationVerificationRequest authorizationVerificationRequest
+    ) {
+        AuthorizationVerificationResponse authorizationVerificationResponse = this.roleUserService.hasPermission(
+                authorizationVerificationRequest.getUsername(),
+                authorizationVerificationRequest.getRequestPath(),
+                authorizationVerificationRequest.getRealmId()
+        );
 
         return ResponseEntity.ok().body(authorizationVerificationResponse);
     }

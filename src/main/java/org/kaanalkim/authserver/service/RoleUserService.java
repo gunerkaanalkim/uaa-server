@@ -12,5 +12,5 @@ public interface RoleUserService extends BaseCrudService<RoleUser> {
 
     RoleUser findByUserId(int userId);
 
-    AuthorizationVerificationResponse hasPermission(String username, String requestPath);
+    AuthorizationVerificationResponse hasPermission(String username, String requestPath, long realmId);
 }

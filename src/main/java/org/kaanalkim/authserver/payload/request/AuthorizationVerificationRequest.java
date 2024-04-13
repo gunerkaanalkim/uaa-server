@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthorizationVerificationRequest {
     private String username;
+    private long realmId;
     private String requestPath;
 }
