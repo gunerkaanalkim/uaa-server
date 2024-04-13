@@ -1,9 +1,11 @@
 FROM maven:3.8.5-openjdk-17 as builder
 WORKDIR /app
 COPY pom.xml .
-RUN mvn dependency:go-offline
+RUN mkdir -p /root/.m2 \
+    && mkdir /root/.m2/repository
+COPY docker/settings.xml /root/.m2
 COPY src ./src
-RUN mvn clean package -DskipTests=true
+RUN mvn clean install
 
 FROM amazoncorretto:17-alpine-jdk as prod
 RUN mkdir /app
