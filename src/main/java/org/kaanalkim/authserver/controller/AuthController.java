@@ -40,7 +40,12 @@ public class AuthController {
 
         UserInfo userInfo = userService.getByUsername(credential.getUsername());
 
-        return ResponseEntity.ok(new AuthResponse(token, userInfo));
+        AuthResponse authResponse = AuthResponse.builder()
+                .token(token)
+                .userInfo(userInfo)
+                .build();
+
+        return ResponseEntity.ok(authResponse);
     }
 
     @GetMapping(value = "who-am-i")
