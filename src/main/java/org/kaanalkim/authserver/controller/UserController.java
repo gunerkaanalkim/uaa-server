@@ -1,6 +1,7 @@
 package org.kaanalkim.authserver.controller;
 
 import lombok.AllArgsConstructor;
+import org.kaanalkim.authserver.exception.UserAlreadyExistException;
 import org.kaanalkim.authserver.mapper.UserMapper;
 import org.kaanalkim.authserver.mapper.impl.RoleUserMapperImpl;
 import org.kaanalkim.authserver.model.User;
@@ -11,6 +12,7 @@ import org.kaanalkim.authserver.payload.request.RoleToUser;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
 import org.kaanalkim.common.controller.base.AbstractController;
+import org.kaanalkim.common.exception.UserDisabledException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +38,7 @@ public class UserController extends AbstractController<User, UserDTO> {
         return this.userMapper;
     }
 
-    @PostMapping(value="change-password")
+    @PostMapping(value = "change-password")
     public ResponseEntity<UserDTO> changePassword(@RequestBody ChangePassword entity) {
         UserDTO userDTO = this.userMapper.toDTO(this.userService.changePassword(entity));
 
@@ -62,7 +64,13 @@ public class UserController extends AbstractController<User, UserDTO> {
     }
 
     @Override
-    public ResponseEntity<UserDTO> update(@RequestBody UserDTO userDTO) {
-        return super.update(userDTO);
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
+        boolean userExist = this.userService.isUserExist(userDTO);
+
+        if (userExist) {
+            throw new UserAlreadyExistException("Please choose an available username.");
+        }
+
+        return super.create(userDTO);
     }
 }

@@ -12,4 +12,6 @@ public interface UserRepository extends BaseRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
     UserInfo getByUsername(String username);
+
+    Optional<User> findUserByUsernameAndRealmId(String username, long realmId);
 }

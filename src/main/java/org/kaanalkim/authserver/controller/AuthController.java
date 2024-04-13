@@ -1,6 +1,8 @@
 package org.kaanalkim.authserver.controller;
 
 import lombok.AllArgsConstructor;
+import org.kaanalkim.authserver.mapper.UserMapper;
+import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.request.AuthorizationVerificationRequest;
 import org.kaanalkim.authserver.payload.request.Credential;
 import org.kaanalkim.authserver.payload.response.AuthResponse;
@@ -25,20 +27,20 @@ public class AuthController {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserService userService;
     private final RoleUserService roleUserService;
+    private final UserMapper userMapper;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody Credential credential) throws Exception {
 
-        UserDetails userDetails = userService.loadUserByUsername(credential.getUsername());
+        User user = userService.findUserByUsernameAndRealmId(credential.getUsername(), credential.getRealmId());
 
-        final String token = jwtTokenUtil.generateToken(userDetails);
+        final String token = jwtTokenUtil.generateToken(userMapper.toDTO(user));
 
         this.authenticationService.authenticate(credential.getUsername(), credential.getPassword());
 
-        /* List<Privileges> privileges = roleEmployeeService.getPrivilegesByUsername(credential.getUsername());*/
-        UserInfo userSecret = userService.getByUsername(credential.getUsername());
+        UserInfo userInfo = userService.getByUsername(credential.getUsername());
 
-        return ResponseEntity.ok(new AuthResponse(token, userSecret));
+        return ResponseEntity.ok(new AuthResponse(token, userInfo));
     }
 
     @GetMapping(value = "who-am-i")

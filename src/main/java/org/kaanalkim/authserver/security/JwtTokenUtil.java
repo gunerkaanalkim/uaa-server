@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.kaanalkim.authserver.payload.dto.UserDTO;
 import org.kaanalkim.authserver.payload.response.JWTVerificationResponse;
 import org.kaanalkim.common.exception.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,9 +44,9 @@ public class JwtTokenUtil implements Serializable {
     }
 
     //generate token for user
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDTO userDTO) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
+        return doGenerateToken(claims, userDTO.getUsername());
     }
 
     //validate token

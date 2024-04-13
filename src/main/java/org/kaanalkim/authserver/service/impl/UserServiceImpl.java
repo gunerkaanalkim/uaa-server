@@ -2,6 +2,7 @@ package org.kaanalkim.authserver.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.kaanalkim.authserver.model.User;
+import org.kaanalkim.authserver.payload.dto.UserDTO;
 import org.kaanalkim.authserver.payload.request.ChangePassword;
 import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.repository.UserRepository;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserServiceImpl extends AbstractCrudService<User> implements UserService {
     private final UserRepository userRepository;
+
     @Override
     @SuppressWarnings("unchecked")
     protected UserRepository getRepository() {
@@ -42,7 +44,7 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
 
         User user = oldUser.get();
 
-        if(changePassword.getPassword().equals(changePassword.getRePassword())) {
+        if (changePassword.getPassword().equals(changePassword.getRePassword())) {
             user.setPassword(changePassword.getPassword());
         }
 
@@ -65,5 +67,25 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
     @Override
     public UserInfo getByUsername(String username) {
         return this.userRepository.getByUsername(username);
+    }
+
+    @Override
+    public boolean isUserExist(UserDTO userDTO) {
+        Optional<User> userByRealm = this.userRepository
+                .findUserByUsernameAndRealmId(userDTO.getUsername(), userDTO.getRealm().getId());
+
+        return userByRealm.isPresent();
+    }
+
+    @Override
+    public User findUserByUsernameAndRealmId(String username, long realmId) {
+        Optional<User> userByRealm = this.userRepository
+                .findUserByUsernameAndRealmId(username, realmId);
+
+        if (userByRealm.isEmpty()) {
+            throw new UsernameNotFoundException("User not found.");
+        }
+
+        return userByRealm.get();
     }
 }
