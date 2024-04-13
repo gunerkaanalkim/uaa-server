@@ -1,7 +1,8 @@
 package org.kaanalkim.authserver.controller;
 
 import lombok.AllArgsConstructor;
-import org.kaanalkim.authserver.payload.request.*;
+import org.kaanalkim.authserver.payload.request.AuthorizationVerificationRequest;
+import org.kaanalkim.authserver.payload.request.Credential;
 import org.kaanalkim.authserver.payload.response.AuthResponse;
 import org.kaanalkim.authserver.payload.response.AuthorizationVerificationResponse;
 import org.kaanalkim.authserver.payload.response.JWTVerificationResponse;

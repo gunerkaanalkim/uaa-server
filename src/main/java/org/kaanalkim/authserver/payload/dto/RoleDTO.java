@@ -1,13 +1,17 @@
 package org.kaanalkim.authserver.payload.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.kaanalkim.authserver.mapper.AbstractDTO;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.kaanalkim.common.model.base.AbstractDTO;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoleDTO extends AbstractDTO {
     protected Long id;
     private String name;

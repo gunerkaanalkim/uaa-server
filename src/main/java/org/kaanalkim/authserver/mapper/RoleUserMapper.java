@@ -1,27 +1,8 @@
 package org.kaanalkim.authserver.mapper;
 
-import org.kaanalkim.authserver.mapper.base.BaseMapper;
 import org.kaanalkim.authserver.model.RoleUser;
 import org.kaanalkim.authserver.payload.dto.RoleUserDTO;
-import org.springframework.stereotype.Service;
+import org.kaanalkim.common.mapper.base.BaseMapper;
 
-@Service
-public class RoleUserMapper implements BaseMapper<RoleUser, RoleUserDTO> {
-    @Override
-    public RoleUserDTO toDTO(RoleUser roleUser) {
-        return RoleUserDTO.builder()
-                .id(roleUser.getId())
-                .user(roleUser.getUser())
-                .role(roleUser.getRole())
-                .build();
-    }
-
-    @Override
-    public RoleUser toEntity(RoleUserDTO roleUserDTO) {
-        return RoleUser.builder()
-                .id(roleUserDTO.getRole().getId())
-                .user(roleUserDTO.getUser())
-                .role(roleUserDTO.getRole())
-                .build();
-    }
+public interface RoleUserMapper extends BaseMapper<RoleUser, RoleUserDTO> {
 }
