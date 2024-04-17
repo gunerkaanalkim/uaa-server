@@ -9,6 +9,7 @@ import org.kaanalkim.authserver.payload.response.AuthResponse;
 import org.kaanalkim.authserver.payload.response.AuthorizationVerificationResponse;
 import org.kaanalkim.authserver.payload.response.JWTVerificationResponse;
 import org.kaanalkim.authserver.payload.response.UserInfo;
+import org.kaanalkim.authserver.security.JwtService;
 import org.kaanalkim.authserver.security.JwtTokenUtil;
 import org.kaanalkim.authserver.service.AuthenticationService;
 import org.kaanalkim.authserver.service.RoleUserService;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class AuthController {
     private final AuthenticationService authenticationService;
-    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtService jwtService;
     private final UserService userService;
     private final RoleUserService roleUserService;
     private final UserMapper userMapper;
@@ -34,7 +35,7 @@ public class AuthController {
 
         User user = userService.findUserByUsernameAndRealmId(credential.getUsername(), credential.getRealmId());
 
-        final String token = jwtTokenUtil.generateToken(userMapper.toDTO(user));
+        final String token = jwtService.generateToken(userMapper.toDTO(user));
 
         this.authenticationService.authenticate(credential.getUsername(), credential.getPassword());
 
@@ -59,7 +60,7 @@ public class AuthController {
     @GetMapping(value = "verify-token")
     public ResponseEntity<JWTVerificationResponse> verifyToken(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String bearerToken) {
-        JWTVerificationResponse jwtVerificationResponse = this.jwtTokenUtil
+        JWTVerificationResponse jwtVerificationResponse = this.jwtService
                 .verifyToken(bearerToken.substring(7));
 
         return ResponseEntity.ok().body(jwtVerificationResponse);
