@@ -1,12 +1,15 @@
 package org.kaanalkim.authserver.controller;
 
 import lombok.AllArgsConstructor;
+import org.kaanalkim.authserver.mapper.UserMapper;
+import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.request.AuthorizationVerificationRequest;
 import org.kaanalkim.authserver.payload.request.Credential;
 import org.kaanalkim.authserver.payload.response.AuthResponse;
 import org.kaanalkim.authserver.payload.response.AuthorizationVerificationResponse;
 import org.kaanalkim.authserver.payload.response.JWTVerificationResponse;
 import org.kaanalkim.authserver.payload.response.UserInfo;
+import org.kaanalkim.authserver.security.JwtService;
 import org.kaanalkim.authserver.security.JwtTokenUtil;
 import org.kaanalkim.authserver.service.AuthenticationService;
 import org.kaanalkim.authserver.service.RoleUserService;
@@ -22,23 +25,28 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class AuthController {
     private final AuthenticationService authenticationService;
-    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtService jwtService;
     private final UserService userService;
     private final RoleUserService roleUserService;
+    private final UserMapper userMapper;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody Credential credential) throws Exception {
 
-        UserDetails userDetails = userService.loadUserByUsername(credential.getUsername());
+        User user = userService.findUserByUsernameAndRealmId(credential.getUsername(), credential.getRealmId());
 
-        final String token = jwtTokenUtil.generateToken(userDetails);
+        final String token = jwtService.generateToken(userMapper.toDTO(user));
 
         this.authenticationService.authenticate(credential.getUsername(), credential.getPassword());
 
-        /* List<Privileges> privileges = roleEmployeeService.getPrivilegesByUsername(credential.getUsername());*/
-        UserInfo userSecret = userService.getByUsername(credential.getUsername());
+        UserInfo userInfo = userService.getByUsername(credential.getUsername());
 
-        return ResponseEntity.ok(new AuthResponse(token, userSecret));
+        AuthResponse authResponse = AuthResponse.builder()
+                .token(token)
+                .userInfo(userInfo)
+                .build();
+
+        return ResponseEntity.ok(authResponse);
     }
 
     @GetMapping(value = "who-am-i")
@@ -52,17 +60,21 @@ public class AuthController {
     @GetMapping(value = "verify-token")
     public ResponseEntity<JWTVerificationResponse> verifyToken(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String bearerToken) {
-        JWTVerificationResponse jwtVerificationResponse = this.jwtTokenUtil
+        JWTVerificationResponse jwtVerificationResponse = this.jwtService
                 .verifyToken(bearerToken.substring(7));
 
         return ResponseEntity.ok().body(jwtVerificationResponse);
     }
 
     @PostMapping(value = "has-permission")
-    public ResponseEntity<AuthorizationVerificationResponse> hasPermission(@RequestBody AuthorizationVerificationRequest authorizationVerificationRequest) {
-
-        AuthorizationVerificationResponse authorizationVerificationResponse = this.roleUserService
-                .hasPermission(authorizationVerificationRequest.getUsername(), authorizationVerificationRequest.getRequestPath());
+    public ResponseEntity<AuthorizationVerificationResponse> hasPermission(
+            @RequestBody AuthorizationVerificationRequest authorizationVerificationRequest
+    ) {
+        AuthorizationVerificationResponse authorizationVerificationResponse = this.roleUserService.hasPermission(
+                authorizationVerificationRequest.getUsername(),
+                authorizationVerificationRequest.getRequestPath(),
+                authorizationVerificationRequest.getRealmId()
+        );
 
         return ResponseEntity.ok().body(authorizationVerificationResponse);
     }

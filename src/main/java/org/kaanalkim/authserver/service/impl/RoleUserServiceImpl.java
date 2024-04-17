@@ -82,14 +82,10 @@ public class RoleUserServiceImpl extends AbstractCrudService<RoleUser> implement
     }
 
     @Override
-    public AuthorizationVerificationResponse hasPermission(String username, String requestPath) {
-        Optional<User> user = this.userService.findByUsername(username);
+    public AuthorizationVerificationResponse hasPermission(String username, String requestPath, long realmId) {
+        User user = this.userService.findUserByUsernameAndRealmId(username, realmId);
 
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("Username not found.");
-        }
-
-        Optional<RoleUser> roleUser = this.roleUserRepository.findByUser(user.get());
+        Optional<RoleUser> roleUser = this.roleUserRepository.findByUser(user);
 
         if (roleUser.isPresent()) {
             List<Permission> assignedPermissionsOfRole = this.rolePermissionService
