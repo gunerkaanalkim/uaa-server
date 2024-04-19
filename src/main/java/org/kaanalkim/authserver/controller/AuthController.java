@@ -10,14 +10,12 @@ import org.kaanalkim.authserver.payload.response.AuthorizationVerificationRespon
 import org.kaanalkim.authserver.payload.response.JWTVerificationResponse;
 import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.security.JwtService;
-import org.kaanalkim.authserver.security.JwtTokenUtil;
 import org.kaanalkim.authserver.service.AuthenticationService;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,7 +33,7 @@ public class AuthController {
 
         User user = userService.findUserByUsernameAndRealmId(credential.getUsername(), credential.getRealmId());
 
-        final String token = jwtService.generateToken(userMapper.toDTO(user));
+        final String token = jwtService.generateToken(user);
 
         this.authenticationService.authenticate(credential.getUsername(), credential.getPassword());
 

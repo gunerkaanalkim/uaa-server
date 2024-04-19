@@ -15,7 +15,6 @@ import org.kaanalkim.authserver.service.UserService;
 import org.kaanalkim.common.exception.RoleAlreadyAssignedException;
 import org.kaanalkim.common.model.enums.ErrorCode;
 import org.kaanalkim.common.service.base.AbstractCrudService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

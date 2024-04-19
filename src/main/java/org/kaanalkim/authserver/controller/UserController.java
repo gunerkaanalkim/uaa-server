@@ -12,7 +12,6 @@ import org.kaanalkim.authserver.payload.request.RoleToUser;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
 import org.kaanalkim.common.controller.base.AbstractController;
-import org.kaanalkim.common.exception.UserDisabledException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
