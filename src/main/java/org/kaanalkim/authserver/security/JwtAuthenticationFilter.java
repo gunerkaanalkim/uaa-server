@@ -76,8 +76,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             handlerExceptionResolver.resolveException(request, response, null, exception);
         }
     }
-
-    private String extractUserName(String jwtToken) {
-
-    }
 }
