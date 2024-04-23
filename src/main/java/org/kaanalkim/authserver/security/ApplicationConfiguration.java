@@ -22,7 +22,7 @@ public class ApplicationConfiguration {
 
     @Bean
     UserDetailsService userDetailsService() {
-        return username -> (UserDetails) userRepository.findByUsername(username)
+        return username -> userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
@@ -45,4 +45,5 @@ public class ApplicationConfiguration {
 
         return authProvider;
     }
+
 }

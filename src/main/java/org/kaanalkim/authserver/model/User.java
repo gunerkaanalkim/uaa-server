@@ -8,6 +8,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.kaanalkim.common.model.base.AbstractEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,7 +21,7 @@ import org.kaanalkim.common.model.base.AbstractEntity;
 @Entity
 @Table(name = "users")
 @SuperBuilder
-public class User extends AbstractEntity {
+public class User extends AbstractEntity implements UserDetails {
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "realm_id", referencedColumnName = "id")
     private Realm realm;
@@ -28,4 +33,35 @@ public class User extends AbstractEntity {
 
     @JsonIgnore
     private String password;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
