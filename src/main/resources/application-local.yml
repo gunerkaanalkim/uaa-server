@@ -16,3 +16,7 @@ jwt:
   secret: <SECRET_SHOULD_BE_CHANGED>
 
 unauthorizedEndpoints: /authenticate/login, /api/seeder, /v2/api-docs, /configuration/ui, /swagger-resources/**, /swagger-ui/**, /configuration/security, /swagger-ui.html, /webjars/**, /webjars/springfox-swagger-ui/**, /index.html, /swagger-ui/index.html
+
+logging:
+  level:
+    org.springframework: TRACE
