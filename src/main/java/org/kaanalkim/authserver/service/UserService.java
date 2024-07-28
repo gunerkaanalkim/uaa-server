@@ -16,7 +16,7 @@ public interface UserService extends BaseCrudService<User>, UserDetailsService {
 
     UserInfo getByUsername(String username);
 
-    boolean isUserExist(UserDTO userDTO);
+    void isUserExist(UserDTO userDTO);
 
     User findUserByUsernameAndRealmId(String username, long realmId);
 }

@@ -64,12 +64,7 @@ public class UserController extends AbstractController<User, UserDTO> {
 
     @Override
     public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
-        boolean userExist = this.userService.isUserExist(userDTO);
-
-        if (userExist) {
-            throw new UserAlreadyExistException("Please choose an available username.");
-        }
-
+        this.userService.isUserExist(userDTO);
         return super.create(userDTO);
     }
 }

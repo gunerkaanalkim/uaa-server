@@ -1,6 +1,7 @@
 package org.kaanalkim.authserver.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.kaanalkim.authserver.exception.UserAlreadyExistException;
 import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
 import org.kaanalkim.authserver.payload.request.ChangePassword;
@@ -70,11 +71,13 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
     }
 
     @Override
-    public boolean isUserExist(UserDTO userDTO) {
+    public void isUserExist(UserDTO userDTO) {
         Optional<User> userByRealm = this.userRepository
                 .findUserByUsernameAndRealmId(userDTO.getUsername(), userDTO.getRealm().getId());
 
-        return userByRealm.isPresent();
+        if (userByRealm.isPresent()) {
+            throw new UserAlreadyExistException("User cannot be registered with given username.");
+        }
     }
 
     @Override
