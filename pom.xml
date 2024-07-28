@@ -19,7 +19,7 @@
         <mysql-connector.version>8.0.33</mysql-connector.version>
         <springfox.version>3.0.0</springfox.version>
         <gson.version>2.10.1</gson.version>
-        <common.version>1.0.3-SNAPSHOT</common.version>
+        <common.version>1.0.5-SNAPSHOT</common.version>
     </properties>
 
     <dependencies>

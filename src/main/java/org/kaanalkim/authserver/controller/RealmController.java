@@ -36,22 +36,14 @@ public class RealmController extends AbstractController<Realm, RealmDTO> {
 
     @Override
     public ResponseEntity<RealmDTO> delete(Long id) {
-        Realm realm = this.realmService.get(id);
-
-        if (realm.getCode().equals("main")) {
-            throw new RecordCannotBeDeletedException("This record cannot be deleted!");
-        }
+        this.realmService.isMainRealm(id);
 
         return super.delete(id);
     }
 
     @Override
     public ResponseEntity<List<RealmDTO>> deleteAll(List<RealmDTO> all) {
-        Optional<RealmDTO> realm = all.stream().filter(realmDTO -> realmDTO.getCode().equals("main")).findFirst();
-
-        if (realm.isPresent() && realm.get().getCode().equals("main")) {
-            throw new RecordCannotBeDeletedException("This record cannot be deleted!");
-        }
+        all.forEach(realmDTO -> this.realmService.isMainRealm(realmDTO.getId()));
 
         return super.deleteAll(all);
     }
