@@ -26,12 +26,11 @@ public class AuthController {
     private final JwtService jwtService;
     private final UserService userService;
     private final RoleUserService roleUserService;
-    private final UserMapper userMapper;
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody Credential credential) throws Exception {
+    @PostMapping("/login/realm/{realmId}")
+    public ResponseEntity<AuthResponse> login(@PathVariable("realmId") long realmId, @RequestBody Credential credential) throws Exception {
 
-        User user = userService.findUserByUsernameAndRealmId(credential.getUsername(), credential.getRealmId());
+        User user = userService.findUserByUsernameAndRealmId(credential.getUsername(), realmId);
 
         final String token = jwtService.generateToken(user);
 

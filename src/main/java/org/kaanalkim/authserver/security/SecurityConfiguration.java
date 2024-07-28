@@ -22,7 +22,7 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
 
     private static final String[] WHITE_LIST_URL = {
-            "/authenticate/login",
+            "/authenticate/**",
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",

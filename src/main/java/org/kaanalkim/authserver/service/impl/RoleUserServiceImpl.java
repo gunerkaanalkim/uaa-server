@@ -92,11 +92,7 @@ public class RoleUserServiceImpl extends AbstractCrudService<RoleUser> implement
 
             Permission assignedPermission = assignedPermissionsOfRole
                     .parallelStream()
-                    .filter(permission -> {
-                        String requestPathOfPermission = String.format("/%s/%s", permission.getController(), permission.getUrl());
-
-                        return requestPath.contains(requestPathOfPermission);
-                    })
+                    .filter(permission -> requestPath.contains(permission.getUrl()))
                     .findFirst()
                     .orElse(null);
 
