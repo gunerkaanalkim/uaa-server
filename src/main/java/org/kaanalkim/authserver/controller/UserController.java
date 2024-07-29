@@ -8,12 +8,18 @@ import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.dto.RoleUserDTO;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
 import org.kaanalkim.authserver.payload.request.ChangePassword;
+import org.kaanalkim.authserver.payload.request.EmailDetails;
 import org.kaanalkim.authserver.payload.request.RoleToUser;
+import org.kaanalkim.authserver.service.EmailService;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
+import org.kaanalkim.authserver.service.impl.EmailServiceImpl;
 import org.kaanalkim.common.controller.base.AbstractController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.Context;
+
+import java.util.Objects;
 
 
 @RestController
@@ -65,6 +71,11 @@ public class UserController extends AbstractController<User, UserDTO> {
     @Override
     public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
         this.userService.isUserExist(userDTO);
-        return super.create(userDTO);
+
+        ResponseEntity<UserDTO> userDTOResponseEntity = super.create(userDTO);
+
+        this.userService.sendRegistrationEmail(userDTO);
+
+        return userDTOResponseEntity;
     }
 }

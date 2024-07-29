@@ -24,3 +24,4 @@ unauthorizedEndpoints: /authenticate/login, /api/seeder, /v2/api-docs, /configur
 logging:
   level:
     org.springframework: TRACE
+

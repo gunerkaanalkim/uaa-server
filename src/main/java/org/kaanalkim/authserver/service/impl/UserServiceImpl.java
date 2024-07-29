@@ -5,8 +5,10 @@ import org.kaanalkim.authserver.exception.UserAlreadyExistException;
 import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
 import org.kaanalkim.authserver.payload.request.ChangePassword;
+import org.kaanalkim.authserver.payload.request.EmailDetails;
 import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.repository.UserRepository;
+import org.kaanalkim.authserver.service.EmailService;
 import org.kaanalkim.authserver.service.UserService;
 import org.kaanalkim.common.exception.NotFoundException;
 import org.kaanalkim.common.service.base.AbstractCrudService;
@@ -14,14 +16,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl extends AbstractCrudService<User> implements UserService {
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -90,5 +95,20 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
         }
 
         return userByRealm.get();
+    }
+
+    @Override
+    public void sendRegistrationEmail(UserDTO userDTO) {
+        Context context = new Context();
+        context.setVariable("username", userDTO.getUsername());
+        context.setVariable("name", userDTO.getName());
+        context.setVariable("surname", userDTO.getSurname());
+
+        EmailDetails emailDetails = EmailDetails.builder()
+                .recipient(Objects.requireNonNull(userDTO).getEmail())
+                .subject("User has been created")
+                .build();
+
+        this.emailService.sendWithTemplate(emailDetails, "user-registration-en", context);
     }
 }

@@ -5,18 +5,21 @@ import org.kaanalkim.authserver.mapper.UserMapper;
 import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.request.AuthorizationVerificationRequest;
 import org.kaanalkim.authserver.payload.request.Credential;
+import org.kaanalkim.authserver.payload.request.EmailDetails;
 import org.kaanalkim.authserver.payload.response.AuthResponse;
 import org.kaanalkim.authserver.payload.response.AuthorizationVerificationResponse;
 import org.kaanalkim.authserver.payload.response.JWTVerificationResponse;
 import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.security.JwtService;
 import org.kaanalkim.authserver.service.AuthenticationService;
+import org.kaanalkim.authserver.service.EmailService;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.Context;
 
 @RestController
 @RequestMapping("authenticate")
@@ -26,6 +29,7 @@ public class AuthController {
     private final JwtService jwtService;
     private final UserService userService;
     private final RoleUserService roleUserService;
+    private final EmailService emailService;
 
     @PostMapping("/login/realm/{realmId}")
     public ResponseEntity<AuthResponse> login(@PathVariable("realmId") long realmId, @RequestBody Credential credential) throws Exception {
