@@ -2,15 +2,22 @@ package org.kaanalkim.authserver.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.kaanalkim.authserver.exception.UserAlreadyExistException;
+import org.kaanalkim.authserver.model.OperationType;
 import org.kaanalkim.authserver.model.User;
+import org.kaanalkim.authserver.model.UserToken;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
 import org.kaanalkim.authserver.payload.request.ChangePassword;
 import org.kaanalkim.authserver.payload.request.EmailDetails;
+import org.kaanalkim.authserver.payload.request.ForgotPasswordRequest;
+import org.kaanalkim.authserver.payload.response.ForgotPasswordResponse;
 import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.repository.UserRepository;
 import org.kaanalkim.authserver.service.EmailService;
 import org.kaanalkim.authserver.service.UserService;
+import org.kaanalkim.authserver.service.UserTokenService;
+import org.kaanalkim.common.exception.ActiveTokenFoundException;
 import org.kaanalkim.common.exception.NotFoundException;
+import org.kaanalkim.common.exception.UserNotFoundException;
 import org.kaanalkim.common.service.base.AbstractCrudService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +34,7 @@ import java.util.Optional;
 public class UserServiceImpl extends AbstractCrudService<User> implements UserService {
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final UserTokenService userTokenService;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -86,12 +94,12 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
     }
 
     @Override
-    public User findUserByUsernameAndRealmId(String username, long realmId) {
+    public User findUserByUsernameAndRealmId(String username, long realmId) throws UserNotFoundException {
         Optional<User> userByRealm = this.userRepository
                 .findUserByUsernameAndRealmId(username, realmId);
 
         if (userByRealm.isEmpty()) {
-            throw new UsernameNotFoundException("User not found.");
+            throw new UserNotFoundException("User not found.");
         }
 
         return userByRealm.get();
@@ -110,5 +118,30 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
                 .build();
 
         this.emailService.sendWithTemplate(emailDetails, "user-registration-en", context);
+    }
+
+    @Override
+    public ForgotPasswordResponse forgotPassword(ForgotPasswordRequest forgotPasswordRequest)
+            throws UserNotFoundException, ActiveTokenFoundException {
+        Optional<User> userByRealm = this.userRepository
+                .findUserByUsernameAndRealmId(forgotPasswordRequest.getUsername(), forgotPasswordRequest.getRealmId());
+
+        if (userByRealm.isEmpty()) {
+            throw new UserNotFoundException("User not found.");
+        }
+
+        UserToken userToken = this.userTokenService
+                .createUserToken(userByRealm.get(), OperationType.FORGOT_PASSWORD);
+
+        //TODO send an email
+
+
+        return ForgotPasswordResponse.builder()
+                .timeout(userToken.getExpireDate())
+                .build();
+    }
+
+    private static void sendForgotPasswordEmail() {
+
     }
 }

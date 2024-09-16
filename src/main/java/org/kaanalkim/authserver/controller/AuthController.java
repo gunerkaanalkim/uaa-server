@@ -15,6 +15,7 @@ import org.kaanalkim.authserver.service.AuthenticationService;
 import org.kaanalkim.authserver.service.EmailService;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
+import org.kaanalkim.common.exception.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -70,7 +71,7 @@ public class AuthController {
     @PostMapping(value = "has-permission")
     public ResponseEntity<AuthorizationVerificationResponse> hasPermission(
             @RequestBody AuthorizationVerificationRequest authorizationVerificationRequest
-    ) {
+    ) throws UserNotFoundException {
         AuthorizationVerificationResponse authorizationVerificationResponse = this.roleUserService.hasPermission(
                 authorizationVerificationRequest.getUsername(),
                 authorizationVerificationRequest.getRequestPath(),

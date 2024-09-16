@@ -13,6 +13,7 @@ import org.kaanalkim.authserver.service.RoleService;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
 import org.kaanalkim.common.exception.RoleAlreadyAssignedException;
+import org.kaanalkim.common.exception.UserNotFoundException;
 import org.kaanalkim.common.model.enums.ErrorCode;
 import org.kaanalkim.common.service.base.AbstractCrudService;
 import org.springframework.stereotype.Service;
@@ -81,7 +82,7 @@ public class RoleUserServiceImpl extends AbstractCrudService<RoleUser> implement
     }
 
     @Override
-    public AuthorizationVerificationResponse hasPermission(String username, String requestPath, long realmId) {
+    public AuthorizationVerificationResponse hasPermission(String username, String requestPath, long realmId) throws UserNotFoundException {
         User user = this.userService.findUserByUsernameAndRealmId(username, realmId);
 
         Optional<RoleUser> roleUser = this.roleUserRepository.findByUser(user);
