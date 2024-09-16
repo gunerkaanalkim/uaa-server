@@ -11,10 +11,22 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  mail:
+    host: ${EMAIL_HOST}
+    port: ${EMAIL_PORT}
+    username: ${EMAIL_SENDER}
+    password: ${EMAIL_APP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 security:
   jwt:
     secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
     expiration-time: 3600000
 
-unauthorizedEndpoints: /authenticate/login, /api/seeder, /v2/api-docs, /configuration/ui, /swagger-resources/**, /swagger-ui/**, /configuration/security, /swagger-ui.html, /webjars/**, /webjars/springfox-swagger-ui/**, /index.html, /swagger-ui/index.html
+userToken:
+  expiration-window: 30

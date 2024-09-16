@@ -30,6 +30,10 @@ public class User extends AbstractEntity implements UserDetails {
     private String surname;
     private String username;
     private String email;
+    private boolean isNonExpired;
+    private boolean isNonLocked;
+    private boolean isEnabled;
+    private boolean isCredentialsNonExpired;
 
     @JsonIgnore
     private String password;
@@ -46,22 +50,22 @@ public class User extends AbstractEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return isNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return isCredentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
 }

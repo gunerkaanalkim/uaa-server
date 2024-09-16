@@ -1,17 +1,20 @@
 package org.kaanalkim.authserver.controller;
 
 import lombok.AllArgsConstructor;
-import org.kaanalkim.authserver.exception.UserAlreadyExistException;
 import org.kaanalkim.authserver.mapper.UserMapper;
 import org.kaanalkim.authserver.mapper.impl.RoleUserMapperImpl;
 import org.kaanalkim.authserver.model.User;
 import org.kaanalkim.authserver.payload.dto.RoleUserDTO;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
 import org.kaanalkim.authserver.payload.request.ChangePassword;
+import org.kaanalkim.authserver.payload.request.ForgotPasswordRequest;
 import org.kaanalkim.authserver.payload.request.RoleToUser;
+import org.kaanalkim.authserver.payload.response.ForgotPasswordResponse;
 import org.kaanalkim.authserver.service.RoleUserService;
 import org.kaanalkim.authserver.service.UserService;
 import org.kaanalkim.common.controller.base.AbstractController;
+import org.kaanalkim.common.exception.ActiveTokenFoundException;
+import org.kaanalkim.common.exception.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +47,13 @@ public class UserController extends AbstractController<User, UserDTO> {
         return ResponseEntity.ok().body(userDTO);
     }
 
+    @PostMapping(value = "forgot-password")
+    public ResponseEntity<ForgotPasswordResponse> forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) throws UserNotFoundException, ActiveTokenFoundException {
+        ForgotPasswordResponse forgotPasswordResponse = this.userService.forgotPassword(forgotPasswordRequest);
+
+        return ResponseEntity.ok().body(forgotPasswordResponse);
+    }
+
     @PostMapping("assign-role")
     public ResponseEntity<RoleUserDTO> assignRoleToUser(@RequestBody RoleToUser roleToUser) {
         RoleUserDTO roleUserDTO = this.roleUserMapperImpl.toDTO(this.roleUserService.assignRoleToUser(roleToUser));
@@ -64,12 +74,12 @@ public class UserController extends AbstractController<User, UserDTO> {
 
     @Override
     public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
-        boolean userExist = this.userService.isUserExist(userDTO);
+        this.userService.isUserExist(userDTO);
 
-        if (userExist) {
-            throw new UserAlreadyExistException("Please choose an available username.");
-        }
+        ResponseEntity<UserDTO> userDTOResponseEntity = super.create(userDTO);
 
-        return super.create(userDTO);
+        this.userService.sendRegistrationEmail(userDTO);
+
+        return userDTOResponseEntity;
     }
 }

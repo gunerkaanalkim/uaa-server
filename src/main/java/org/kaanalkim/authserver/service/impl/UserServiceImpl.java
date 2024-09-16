@@ -1,26 +1,40 @@
 package org.kaanalkim.authserver.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.kaanalkim.authserver.exception.UserAlreadyExistException;
+import org.kaanalkim.authserver.model.OperationType;
 import org.kaanalkim.authserver.model.User;
+import org.kaanalkim.authserver.model.UserToken;
 import org.kaanalkim.authserver.payload.dto.UserDTO;
 import org.kaanalkim.authserver.payload.request.ChangePassword;
+import org.kaanalkim.authserver.payload.request.EmailDetails;
+import org.kaanalkim.authserver.payload.request.ForgotPasswordRequest;
+import org.kaanalkim.authserver.payload.response.ForgotPasswordResponse;
 import org.kaanalkim.authserver.payload.response.UserInfo;
 import org.kaanalkim.authserver.repository.UserRepository;
+import org.kaanalkim.authserver.service.EmailService;
 import org.kaanalkim.authserver.service.UserService;
+import org.kaanalkim.authserver.service.UserTokenService;
+import org.kaanalkim.common.exception.ActiveTokenFoundException;
 import org.kaanalkim.common.exception.NotFoundException;
+import org.kaanalkim.common.exception.UserNotFoundException;
 import org.kaanalkim.common.service.base.AbstractCrudService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl extends AbstractCrudService<User> implements UserService {
     private final UserRepository userRepository;
+    private final EmailService emailService;
+    private final UserTokenService userTokenService;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -70,22 +84,64 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
     }
 
     @Override
-    public boolean isUserExist(UserDTO userDTO) {
+    public void isUserExist(UserDTO userDTO) {
         Optional<User> userByRealm = this.userRepository
                 .findUserByUsernameAndRealmId(userDTO.getUsername(), userDTO.getRealm().getId());
 
-        return userByRealm.isPresent();
+        if (userByRealm.isPresent()) {
+            throw new UserAlreadyExistException("User cannot be registered with given username.");
+        }
     }
 
     @Override
-    public User findUserByUsernameAndRealmId(String username, long realmId) {
+    public User findUserByUsernameAndRealmId(String username, long realmId) throws UserNotFoundException {
         Optional<User> userByRealm = this.userRepository
                 .findUserByUsernameAndRealmId(username, realmId);
 
         if (userByRealm.isEmpty()) {
-            throw new UsernameNotFoundException("User not found.");
+            throw new UserNotFoundException("User not found.");
         }
 
         return userByRealm.get();
+    }
+
+    @Override
+    public void sendRegistrationEmail(UserDTO userDTO) {
+        Context context = new Context();
+        context.setVariable("username", userDTO.getUsername());
+        context.setVariable("name", userDTO.getName());
+        context.setVariable("surname", userDTO.getSurname());
+
+        EmailDetails emailDetails = EmailDetails.builder()
+                .recipient(Objects.requireNonNull(userDTO).getEmail())
+                .subject("User has been created")
+                .build();
+
+        this.emailService.sendWithTemplate(emailDetails, "user-registration-en", context);
+    }
+
+    @Override
+    public ForgotPasswordResponse forgotPassword(ForgotPasswordRequest forgotPasswordRequest)
+            throws UserNotFoundException, ActiveTokenFoundException {
+        Optional<User> userByRealm = this.userRepository
+                .findUserByUsernameAndRealmId(forgotPasswordRequest.getUsername(), forgotPasswordRequest.getRealmId());
+
+        if (userByRealm.isEmpty()) {
+            throw new UserNotFoundException("User not found.");
+        }
+
+        UserToken userToken = this.userTokenService
+                .createUserToken(userByRealm.get(), OperationType.FORGOT_PASSWORD);
+
+        //TODO send an email
+
+
+        return ForgotPasswordResponse.builder()
+                .timeout(userToken.getExpireDate())
+                .build();
+    }
+
+    private static void sendForgotPasswordEmail() {
+
     }
 }

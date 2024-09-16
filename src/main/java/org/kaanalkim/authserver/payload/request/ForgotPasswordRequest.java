@@ -1,9 +1,10 @@
+
 package org.kaanalkim.authserver.payload.request;
 
 import lombok.Data;
 
 @Data
-public class Credential {
+public class ForgotPasswordRequest {
     private String username;
-    private String password;
+    private Integer realmId;
 }
