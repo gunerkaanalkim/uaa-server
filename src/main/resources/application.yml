@@ -30,3 +30,7 @@ security:
 
 userToken:
   expiration-window: 30
+
+ui:
+  base-url: http://localhost:4200
+  reset-password : /reset-password

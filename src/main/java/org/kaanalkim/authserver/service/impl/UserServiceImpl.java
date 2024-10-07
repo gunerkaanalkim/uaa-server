@@ -19,6 +19,7 @@ import org.kaanalkim.common.exception.ActiveTokenFoundException;
 import org.kaanalkim.common.exception.NotFoundException;
 import org.kaanalkim.common.exception.UserNotFoundException;
 import org.kaanalkim.common.service.base.AbstractCrudService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +31,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class UserServiceImpl extends AbstractCrudService<User> implements UserService {
     private final UserRepository userRepository;
     private final EmailService emailService;
@@ -45,6 +45,16 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
     @Override
     public Optional<User> findByUsername(String username) {
         return this.userRepository.findByUsername(username);
+    }
+
+    public UserServiceImpl(UserRepository userRepository,
+                           EmailService emailService,
+                           UserTokenService userTokenService,
+                           @Value("${ui.base-url}") String baseURL,
+                           @Value("${ui.reset-password}") String resetPassword) {
+        this.userRepository = userRepository;
+        this.emailService = emailService;
+        this.userTokenService = userTokenService;
     }
 
     @Override
@@ -123,6 +133,7 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
     @Override
     public ForgotPasswordResponse forgotPassword(ForgotPasswordRequest forgotPasswordRequest)
             throws UserNotFoundException, ActiveTokenFoundException {
+        //Find user by realm
         Optional<User> userByRealm = this.userRepository
                 .findUserByUsernameAndRealmId(forgotPasswordRequest.getUsername(), forgotPasswordRequest.getRealmId());
 
@@ -130,11 +141,23 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserSe
             throw new UserNotFoundException("User not found.");
         }
 
+        //Create user token
         UserToken userToken = this.userTokenService
                 .createUserToken(userByRealm.get(), OperationType.FORGOT_PASSWORD);
 
-        //TODO send an email
+        //  Forgot password email
+        EmailDetails emailDetails = EmailDetails.builder()
+                .recipient(Objects.requireNonNull(userByRealm.get()).getEmail())
+                .subject("Forgot Password")
+                .build();
 
+        Context context = new Context();
+        context.setVariable("username", userByRealm.get().getUsername());
+        context.setVariable("name", userByRealm.get().getName());
+        context.setVariable("surname", userByRealm.get().getSurname());
+        context.setVariable("surname", userByRealm.get().getSurname());
+
+        this.emailService.sendWithTemplate(emailDetails, "forgot-password-en", context);
 
         return ForgotPasswordResponse.builder()
                 .timeout(userToken.getExpireDate())

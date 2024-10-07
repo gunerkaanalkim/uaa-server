@@ -22,3 +22,7 @@ jwt:
 logging:
   level:
     org.springframework: TRACE
+
+ui:
+  base-url: http://localhost:4200
+  reset-password : /reset-password
