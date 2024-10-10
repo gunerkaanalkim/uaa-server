@@ -1,12 +1,8 @@
-server:
-  servlet:
-    context-path: /uaa/api
-
 spring:
   datasource:
-    url: jdbc:mysql://integrator-database-do-user-12394181-0.c.db.ondigitalocean.com:25060/integrator
-    username: doadmin
-    password: AVNS_O5ZBKWlbQSU9AdUm75J
+    url: ${DB_HOST:jdbc:mysql://localhost:3306/integrator}
+    username: ${DATABASE_USERNAME:integrator}
+    password: ${DATABASE_PASSWORD:integrator}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:

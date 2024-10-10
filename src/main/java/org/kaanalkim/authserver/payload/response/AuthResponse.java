@@ -3,6 +3,7 @@ package org.kaanalkim.authserver.payload.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @Builder
@@ -10,5 +11,5 @@ import lombok.Data;
 public class AuthResponse {
     private String token;
 
-    private UserInfo userInfo;
+    private UserDetails userDetails;
 }

@@ -2,16 +2,11 @@ package org.kaanalkim.authserver.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import org.kaanalkim.authserver.model.User;
-import org.kaanalkim.authserver.payload.response.JWTVerificationResponse;
-import org.kaanalkim.common.exception.JWTVerificationException;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,63 +29,38 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(User user) {
-        return generateToken(new HashMap<>(), user);
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(this.secretKey)
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    public String generateToken(Map<String, Object> extraClaims, User user) {
-        return doGenerateToken(extraClaims, user);
-    }
-
-    public long getExpirationTime() {
-        return jwtExpiration;
-    }
-
-    private String doGenerateToken(Map<String, Object> claims, User user) {
-        return Jwts.builder()
-                .claims(claims)
-                .subject(user.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + this.jwtExpiration))
-                .signWith(getSignInKey(), Jwts.SIG.HS256)
-                .compact();
-    }
-
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
-    }
-
-    public JWTVerificationResponse verifyToken(String token) {
-        JWTVerificationResponse jwtVerificationResponse;
-        try {
-            Claims claims = extractAllClaims(token);
-
-            jwtVerificationResponse = new JWTVerificationResponse();
-            jwtVerificationResponse.setIsValid(true);
-            jwtVerificationResponse.setClaims(claims);
-
-
-            return jwtVerificationResponse;
-        } catch (Exception ignored) {
-            throw new JWTVerificationException("JWT token is not valid.");
-        }
-    }
-
-    private boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(token).getPayload();
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, userDetails.getUsername());
     }
 
-    private SecretKey getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(this.secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
+    private String createToken(Map<String, Object> claims, String subject) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(jwtExpiration))
+                .signWith(SignatureAlgorithm.HS256, this.secretKey)
+                .compact();
+    }
+
+    public Boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
