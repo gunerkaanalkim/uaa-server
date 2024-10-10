@@ -18,7 +18,7 @@ public class JwtService {
     private String secretKey;
 
     @Value("${security.jwt.expiration-time}")
-    private long jwtExpiration;
+    private long expirationTime;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -54,7 +54,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(jwtExpiration))
+                .setExpiration(new Date(System.currentTimeMillis() + this.expirationTime)) // 10 saatlik geçerlilik
                 .signWith(SignatureAlgorithm.HS256, this.secretKey)
                 .compact();
     }
